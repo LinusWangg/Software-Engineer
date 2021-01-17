@@ -59,7 +59,7 @@
         <!-- 配置表信息 --> 
         <!-- schema即为数据库名 tableName为对应的数据库表 domainObjectName是要生成的实体类 enable*ByExample, 是否生成 example类   -->  
         <!-- 不同的表，修改tableName和domainObjectName就可以 -->
-        <table tableName="user" domainObjectName="User" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        <table tableName="codemodel" domainObjectName="Codemodel" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
     </context>
 </generatorConfiguration>

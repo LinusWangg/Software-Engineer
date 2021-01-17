@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.CodemodelMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.model.Codemodel">
+    <constructor>
+      <arg column="Born_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="Born_string" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="pic_address" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <insert id="insert" parameterType="com.example.demo.model.Codemodel">
+    insert into codemodel (Born_time, Born_string, pic_address
+      )
+    values (#{bornTime,jdbcType=TIMESTAMP}, #{bornString,jdbcType=VARCHAR}, #{picAddress,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.model.Codemodel">
+    insert into codemodel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bornTime != null">
+        Born_time,
+      </if>
+      <if test="bornString != null">
+        Born_string,
+      </if>
+      <if test="picAddress != null">
+        pic_address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bornTime != null">
+        #{bornTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bornString != null">
+        #{bornString,jdbcType=VARCHAR},
+      </if>
+      <if test="picAddress != null">
+        #{picAddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <sql id="Base_Column_List">
+    born_time,born_string,pic_address
+  </sql>
+  <select id="getallcode" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from codemodel
+  </select>
+</mapper>
