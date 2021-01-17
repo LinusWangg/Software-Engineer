@@ -62,6 +62,6 @@ public class UserController {
     		@RequestParam("userpassword") String userpassword,
     		@RequestParam("modify_userpassword") String modify_userpassword){
     	int flag = userService.modifyUser(usercount,userpassword,modify_userpassword);
-    	return flag
+    	return flag;
     }
 }
