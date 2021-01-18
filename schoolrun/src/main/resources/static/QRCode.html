@@ -1,0 +1,32 @@
+
+<head>
+    <title> welcome </title>
+    <meta http-equiv="refresh" content="1">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="./jquery.form.js"></script>
+   
+	<script type="text/javascript">
+    window.onload = function(){
+    	var timestamp = (new Date()).getTime();
+    	console.log(timestamp);
+    	var media_url = "";
+    	$.ajax({
+    		type:"POST",
+    		url:"/codemodel/makecode",
+    		contentType: "application/json",
+    		data:JSON.stringify({
+    			"born_time":timestamp.toString()
+    		}),
+    		success:function(data){
+    			media_url = data.picAddress;
+    			console.log(media_url);
+    			document.getElementById('img').src = media_url;
+    		}
+    	});
+    }
+</script>
+</head>
+<body>
+    	<img id="img" src=""/>
+</body> 
+</html>

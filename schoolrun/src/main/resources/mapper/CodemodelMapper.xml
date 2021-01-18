@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.CodemodelMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.model.Codemodel">
+    <constructor>
+      <arg column="Born_month" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="Bron_day" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="Born_hour" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="Born_minute" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="Born_string" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="pic_address" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <insert id="insert" parameterType="com.example.demo.model.Codemodel">
+    insert into codemodel (Born_month, Bron_day, Born_hour, 
+      Born_minute, Born_string, pic_address
+      )
+    values (#{bornMonth,jdbcType=INTEGER}, #{bronDay,jdbcType=INTEGER}, #{bornHour,jdbcType=INTEGER}, 
+      #{bornMinute,jdbcType=INTEGER}, #{bornString,jdbcType=VARCHAR}, #{picAddress,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.model.Codemodel">
+    insert into codemodel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bornMonth != null">
+        Born_month,
+      </if>
+      <if test="bronDay != null">
+        Bron_day,
+      </if>
+      <if test="bornHour != null">
+        Born_hour,
+      </if>
+      <if test="bornMinute != null">
+        Born_minute,
+      </if>
+      <if test="bornString != null">
+        Born_string,
+      </if>
+      <if test="picAddress != null">
+        pic_address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bornMonth != null">
+        #{bornMonth,jdbcType=INTEGER},
+      </if>
+      <if test="bronDay != null">
+        #{bronDay,jdbcType=INTEGER},
+      </if>
+      <if test="bornHour != null">
+        #{bornHour,jdbcType=INTEGER},
+      </if>
+      <if test="bornMinute != null">
+        #{bornMinute,jdbcType=INTEGER},
+      </if>
+      <if test="bornString != null">
+        #{bornString,jdbcType=VARCHAR},
+      </if>
+      <if test="picAddress != null">
+        #{picAddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <sql id="Base_Column_List">
+    born_month,bron_day,born_hour,born_minute,born_string,pic_address
+  </sql>
+  <select id="getallcode" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from codemodel
+  </select>
+  <select id="findbytime" parameterType="com.example.demo.model.Codemodel" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from codemodel
+    where Born_month = #{month,jdbcType=INTEGER} AND
+    Bron_day = #{day,jdbcType=INTEGER} AND
+    Born_hour = #{hour,jdbcType=INTEGER} AND
+    Born_minute = #{minute,jdbcType=INTEGER}
+  </select>
+</mapper>
