@@ -9,6 +9,6 @@ public interface CodemodelService {
 
 	public List<Codemodel> getallcode();
 	
-	public void makecode(int born_time);
+	public Codemodel makecode(long born_time);
 	
 }

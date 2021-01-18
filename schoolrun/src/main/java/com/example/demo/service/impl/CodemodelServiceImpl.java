@@ -54,18 +54,16 @@ public class CodemodelServiceImpl implements CodemodelService {
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public void makecode(int born_time) {
+	public Codemodel makecode(long born_time) {
 		Codemodel same_time = new Codemodel();
 		Date date = new Date(born_time);
-		DateFormat dateformat = new SimpleDateFormat("MM-dd-hh-mm");
+		DateFormat dateformat = new SimpleDateFormat("MM-dd-HH-mm");
 		String[] datestr = dateformat.format(date).toString().split("-");
 		int month = Integer.parseInt(datestr[0]);
 		int day = Integer.parseInt(datestr[1]);
 		int hour = Integer.parseInt(datestr[2]);
 		int minute = Integer.parseInt(datestr[3]);
-		System.out.println(minute);
 		minute = minute/10;
-		System.out.println(minute);
 		same_time = codemodelMapper.findbytime(month, day, hour, minute);
 		if(same_time==null) {
 			String born_string = getRandomString(8);
@@ -88,14 +86,19 @@ public class CodemodelServiceImpl implements CodemodelService {
 				e.printStackTrace();
 			}
 			File outputFile = new File("./src/main/resources/static/"+datestr[0]+'-'+datestr[1]+'-'+datestr[2]+'-'+datestr[3]+".jpg");
+			String picad = '/'+datestr[0]+'-'+datestr[1]+'-'+datestr[2]+'-'+datestr[3]+".jpg";
 			try {
 				MatrixToImageWriter.writeToFile(bitMatrix, format, outputFile);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			temp.setPicAddress(outputFile.toString());
+			temp.setPicAddress(picad);
 			codemodelMapper.insertSelective(temp);
+			return temp;
+		}
+		else {
+			return same_time;
 		}
 	}
 
