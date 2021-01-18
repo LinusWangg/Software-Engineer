@@ -1,14 +1,23 @@
 package com.example.demo.model;
 
 public class Codemodel {
-    private Integer bornTime;
+    private Integer bornMonth;
+
+    private Integer bronDay;
+
+    private Integer bornHour;
+
+    private Integer bornMinute;
 
     private String bornString;
 
     private String picAddress;
 
-    public Codemodel(Integer bornTime, String bornString, String picAddress) {
-        this.bornTime = bornTime;
+    public Codemodel(Integer bornMonth, Integer bronDay, Integer bornHour, Integer bornMinute, String bornString, String picAddress) {
+        this.bornMonth = bornMonth;
+        this.bronDay = bronDay;
+        this.bornHour = bornHour;
+        this.bornMinute = bornMinute;
         this.bornString = bornString;
         this.picAddress = picAddress;
     }
@@ -17,12 +26,36 @@ public class Codemodel {
         super();
     }
 
-    public Integer getBornTime() {
-        return bornTime;
+    public Integer getBornMonth() {
+        return bornMonth;
     }
 
-    public void setBornTime(Integer bornTime) {
-        this.bornTime = bornTime;
+    public void setBornMonth(Integer bornMonth) {
+        this.bornMonth = bornMonth;
+    }
+
+    public Integer getBronDay() {
+        return bronDay;
+    }
+
+    public void setBronDay(Integer bronDay) {
+        this.bronDay = bronDay;
+    }
+
+    public Integer getBornHour() {
+        return bornHour;
+    }
+
+    public void setBornHour(Integer bornHour) {
+        this.bornHour = bornHour;
+    }
+
+    public Integer getBornMinute() {
+        return bornMinute;
+    }
+
+    public void setBornMinute(Integer bornMinute) {
+        this.bornMinute = bornMinute;
     }
 
     public String getBornString() {
