@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.AppealMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.model.Appeal">
+    <constructor>
+      <arg column="Appeal_stuid" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="Appeal_school" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="Appeal_content" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="Appeal_time" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="Appeal_condition" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="Appeal_adminid" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <insert id="insert" parameterType="com.example.demo.model.Appeal">
+    insert into appeal (Appeal_stuid, Appeal_school, Appeal_content, 
+      Appeal_time, Appeal_condition, Appeal_adminid
+      )
+    values (#{appealStuid,jdbcType=VARCHAR}, #{appealSchool,jdbcType=VARCHAR}, #{appealContent,jdbcType=VARCHAR}, 
+      #{appealTime,jdbcType=BIGINT}, #{appealCondition,jdbcType=INTEGER}, #{appealAdminid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.model.Appeal">
+    insert into appeal
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="appealStuid != null">
+        Appeal_stuid,
+      </if>
+      <if test="appealSchool != null">
+        Appeal_school,
+      </if>
+      <if test="appealContent != null">
+        Appeal_content,
+      </if>
+      <if test="appealTime != null">
+        Appeal_time,
+      </if>
+      <if test="appealCondition != null">
+        Appeal_condition,
+      </if>
+      <if test="appealAdminid != null">
+        Appeal_adminid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="appealStuid != null">
+        #{appealStuid,jdbcType=VARCHAR},
+      </if>
+      <if test="appealSchool != null">
+        #{appealSchool,jdbcType=VARCHAR},
+      </if>
+      <if test="appealContent != null">
+        #{appealContent,jdbcType=VARCHAR},
+      </if>
+      <if test="appealTime != null">
+        #{appealTime,jdbcType=BIGINT},
+      </if>
+      <if test="appealCondition != null">
+        #{appealCondition,jdbcType=INTEGER},
+      </if>
+      <if test="appealAdminid != null">
+        #{appealAdminid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="finish" parameterType="com.example.demo.model.Appeal">
+        update appeal
+        <set>
+            Appeal_adminid = #{appeal_adminid,jdbcType=VARCHAR},
+            Appeal_condition = #{appeal_condition,jdbcType=INTEGER},
+        </set>
+        where Appeal_stuid = #{appeal_stuid,jdbcType=VARCHAR} AND
+        Appeal_school = #{appeal_school,jdbcType=VARCHAR} AND
+        Appeal_time = #{appeal_time,jdbcType=BIGINT}
+  </update>
+</mapper>
