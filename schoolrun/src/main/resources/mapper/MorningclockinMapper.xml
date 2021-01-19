@@ -84,4 +84,14 @@
     Clockin_succeed = #{succeed,jdbcType=SMALLINT} 
     order by Clockin_time DESC limit 1 
   </select>
+  <select id="getmine" parameterType="com.example.demo.model.Morningclockin" resultMap="BaseResultMap">
+    select * 
+    from morningclockin
+    where Clockin_stuid = #{clockin_stuid,jdbcType=VARCHAR} AND
+    Clockin_stuschool = #{clockin_stuschool,jdbcType=VARCHAR}
+  </select>
+  <select id="getall" parameterType="com.example.demo.model.Morningclockin" resultMap="BaseResultMap">
+    select * 
+    from morningclockin
+  </select>
 </mapper>

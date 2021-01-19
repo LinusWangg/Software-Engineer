@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -45,5 +46,18 @@ public class MorningclockinController {
     	float latitude = Float.parseFloat(map.get("latitude"));
     	int flag = morningclockinService.clockin(clockin_stuid,clockin_stuschool,clockin_time,clockin_code,clockin_ip,longitude,latitude);
     	return flag;
+    }
+    
+    @RequestMapping(path="getmine",method=RequestMethod.POST,produces="application/json")
+    public List<Morningclockin> getmine(
+    		@RequestBody HashMap<String, String> map) {
+    	String clockin_stuid = map.get("clockin_stuid");
+    	String clockin_stuschool = map.get("clockin_stuschool");
+    	return morningclockinService.getmine(clockin_stuid,clockin_stuschool);
+    }
+    
+    @RequestMapping(path="getall",method=RequestMethod.GET,produces="application/json")
+    public List<Morningclockin> getall() {
+    	return morningclockinService.getall();
     }
 }

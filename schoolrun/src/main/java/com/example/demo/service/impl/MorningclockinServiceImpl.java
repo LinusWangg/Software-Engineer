@@ -110,4 +110,10 @@ public class MorningclockinServiceImpl implements MorningclockinService {
 			}
 		}
     }
+    public List<Morningclockin> getmine(String clockin_stuid, String clockin_stuschool){
+		return morningclockinMapper.getmine(clockin_stuid, clockin_stuschool);
+    }
+    public List<Morningclockin> getall(){
+    	return morningclockinMapper.getall();
+    }
 }
