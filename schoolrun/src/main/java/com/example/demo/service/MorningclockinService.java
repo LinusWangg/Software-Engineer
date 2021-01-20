@@ -10,5 +10,5 @@ public interface MorningclockinService {
 	
 	public List<Morningclockin> getmine(String clockin_stuid, String clockin_stuschool);
     
-	public List<Morningclockin> getall();
+	public List<Morningclockin> getall(String clockin_stuschool);
 }

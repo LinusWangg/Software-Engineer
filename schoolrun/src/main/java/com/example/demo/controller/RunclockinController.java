@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.model.Morningclockin;
 import com.example.demo.model.Runclockin;
 import com.example.demo.service.RunclockinService;
 
@@ -49,6 +50,21 @@ public class RunclockinController {
     	int baseid = Integer.parseInt(map.get("basetraceid"));
     	int flag = runclockinService.clockin(clockin_stuid,clockin_stuschool,clockin_time,clockin_trace,run_length,run_time,clockin_ip,baseid);
     	return flag;
+    }
+    
+    @RequestMapping(path="getmine",method=RequestMethod.POST,produces="application/json")
+    public List<Runclockin> getmine(
+    		@RequestBody HashMap<String, String> map) {
+    	String clockin_stuid = map.get("clockin_stuid");
+    	String clockin_stuschool = map.get("clockin_stuschool");
+    	return runclockinService.getmine(clockin_stuid,clockin_stuschool);
+    }
+    
+    @RequestMapping(path="getall",method=RequestMethod.POST,produces="application/json")
+    public List<Runclockin> getall(
+    		@RequestBody HashMap<String, String> map) {
+    	String clockin_stuschool = map.get("clockin_stuschool");
+    	return runclockinService.getall(clockin_stuschool);
     }
     
 }

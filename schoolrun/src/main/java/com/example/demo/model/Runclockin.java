@@ -19,9 +19,13 @@ public class Runclockin {
     private float runLength;
     
     private int runTime;
+    
+    private int baseid;
+    
+    private float dtw;
 
     public Runclockin(Long clockinTime, String clockinIp, String clockinStuid, String clockinStuschool, JSONArray clockinTrace, Short clockinSucceed
-    		, float runLength, int runTime) {
+    		, float runLength, int runTime, int baseid, float dtw) {
         this.clockinTime = clockinTime;
         this.clockinIp = clockinIp;
         this.clockinStuid = clockinStuid;
@@ -30,6 +34,8 @@ public class Runclockin {
         this.clockinSucceed = clockinSucceed;
         this.runLength = runLength;
         this.runTime = runTime;
+        this.baseid = baseid;
+        this.dtw = dtw;
     }
 
     public Runclockin() {
@@ -90,6 +96,22 @@ public class Runclockin {
 
     public void setRunTime(int runTime) {
         this.runTime = runTime;
+    }
+    
+    public int getBaseid() {
+        return baseid;
+    }
+
+    public void setBaseid(int baseid) {
+        this.baseid = baseid;
+    }
+    
+    public float getDtw() {
+        return dtw;
+    }
+
+    public void setDtw(float dtw) {
+        this.dtw = dtw;
     }
     
     public void setRunLength(float runLength) {

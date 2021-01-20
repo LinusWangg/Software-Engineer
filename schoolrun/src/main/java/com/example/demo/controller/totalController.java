@@ -16,17 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.demo.model.Basetrace;
-import com.example.demo.service.BasetraceService;
+import com.example.demo.model.total;
+import com.example.demo.service.totalService;
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("/basetrace")
-public class BasetraceController {
+@RequestMapping("/total")
+public class totalController {
 
     // 注入mapper类
     @Resource
-    private BasetraceService basetraceService;
+    private totalService totalService;
 
     /*@RequestMapping(value="{id}", method=RequestMethod.GET, produces="application/json")
     public User getUser(@PathVariable long id) throws Exception {
@@ -36,26 +36,19 @@ public class BasetraceController {
         return user;
     }*/
     
-    @RequestMapping(path="writein",method=RequestMethod.POST,produces="application/json")
-    public int writein(
+    @RequestMapping(path="getmine",method=RequestMethod.POST,produces="application/json")
+    public total getmine(
     		@RequestBody HashMap<String, String> map) {
-    	String school = map.get("school");
-    	JSONArray trace = JSONArray.parseArray(map.get("trace"));
-    	int flag = basetraceService.writein(school,trace);
-    	return flag;
+    	String stuid = map.get("stuid");
+    	String stuschool = map.get("stuschool");
+    	return totalService.getmine(stuid,stuschool);
     }
     
     @RequestMapping(path="getall",method=RequestMethod.POST,produces="application/json")
-    public List<Basetrace> getall(
-    		@RequestBody HashMap<String, String> map){
-    	String school = map.get("school");
-    	return basetraceService.getall(school);
+    public List<total> getall(
+    		@RequestBody HashMap<String, String> map) {
+    	String stuschool = map.get("stuschool");
+    	return totalService.getall(stuschool);
     }
     
-    @RequestMapping(path="get3",method=RequestMethod.POST,produces="application/json")
-    public List<Basetrace> get3(
-    		@RequestBody HashMap<String, String> map){
-    	String school = map.get("school");
-    	return basetraceService.get3(school);
-    }
 }

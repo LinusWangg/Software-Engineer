@@ -34,4 +34,12 @@ public class AppealServiceImpl implements AppealService {
     	return appealMapper.finish(appeal_stuid,appeal_school,appeal_time,appeal_adminid,appeal_condition);
     }
     
+    public List<Appeal> getall(String appeal_school){
+    	return appealMapper.getall(appeal_school);
+    }
+    
+    public List<Appeal> getmine(String appeal_stuid, String appeal_school){
+    	return appealMapper.getmine(appeal_stuid,appeal_school);
+    }
+    
 }

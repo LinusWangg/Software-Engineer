@@ -56,8 +56,10 @@ public class MorningclockinController {
     	return morningclockinService.getmine(clockin_stuid,clockin_stuschool);
     }
     
-    @RequestMapping(path="getall",method=RequestMethod.GET,produces="application/json")
-    public List<Morningclockin> getall() {
-    	return morningclockinService.getall();
+    @RequestMapping(path="getall",method=RequestMethod.POST,produces="application/json")
+    public List<Morningclockin> getall(
+    		@RequestBody HashMap<String, String> map) {
+    	String clockin_stuschool = map.get("clockin_stuschool");
+    	return morningclockinService.getall(clockin_stuschool);
     }
 }

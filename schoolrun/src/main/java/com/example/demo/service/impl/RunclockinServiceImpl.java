@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 import com.example.demo.model.Runclockin;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.demo.model.Codemodel;
+import com.example.demo.model.Basetrace;
+import com.example.demo.service.totalService;
+import com.example.demo.service.BasetraceService;
 import com.example.demo.service.RunclockinService;
 //import com.example.demo.service.BasetraceService;
 
@@ -28,7 +30,8 @@ import com.github.pagehelper.PageHelper;
 public class RunclockinServiceImpl implements RunclockinService {
 	@Autowired
 	private MongoTemplate mongoTemplate;
-	//private BasetraceService basetraceservice;
+	private BasetraceService basetraceservice;
+	private totalService totalService;
     // 注入mapper类
 	@Override
 	public Runclockin findlastsucceed(String clockin_stuid, String clockin_stuschool, short succeed) {
@@ -38,6 +41,37 @@ public class RunclockinServiceImpl implements RunclockinService {
 		query.with(sort).limit(1);
 		tp = mongoTemplate.findOne(query, Runclockin.class);
 		return tp;
+	}
+	
+	public float distance(JSONObject a,JSONObject b) {
+		return Math.abs(Float.parseFloat((String) a.get("latitude")) - Float.parseFloat((String) b.get("latitude")))
+				+Math.abs(Float.parseFloat((String) a.get("longitude")) - Float.parseFloat((String) b.get("longitude")));
+	}
+	
+	public float cla_min(float a,float b,float c) {
+		float minn = 100000;
+		if(minn>a)
+			minn=a;
+		if(minn>b)
+			minn=b;
+		if(minn>c)
+			minn=c;
+		return minn;
+	}
+	
+	public float DTW(JSONArray trace,JSONArray basetrace) {
+		int t_len = trace.size();
+		int b_len = basetrace.size();
+		float [][]cost = new float[t_len][b_len];
+		cost[0][0] = distance(trace.getJSONObject(0),basetrace.getJSONObject(0));
+		for(int i=1;i<t_len;i++)
+			cost[i][0] = cost[i-1][0] + distance(trace.getJSONObject(i),basetrace.getJSONObject(0));
+		for(int j=1;j<b_len;j++)
+			cost[0][j] = cost[0][j-1] + distance(trace.getJSONObject(0),basetrace.getJSONObject(j));
+		for(int i=1;i<t_len;i++)
+			for(int j=1;j<b_len;j++)
+				cost[i][j] = cla_min(cost[i-1][j-1],cost[i][j-1],cost[i-1][j])+distance(trace.getJSONObject(i),basetrace.getJSONObject(j));
+		return cost[t_len-1][b_len-1];
 	}
     
     @Override
@@ -53,23 +87,11 @@ public class RunclockinServiceImpl implements RunclockinService {
 		int minute = Integer.parseInt(datestr[3]);
 		minute = minute/10;
     	if(mci == null) {
-    		//Basetrace cdm = basetraceservice.findbyid(baseid);
-			/*if(cdm.getBornString().equals(clockin_code)) {
-				Morningclockin new_mci = new Morningclockin();
-				new_mci.setClockinCode(clockin_code);
-				new_mci.setClockinIp(clockin_ip);
-				new_mci.setClockinStuid(clockin_stuid);
-				new_mci.setClockinStuschool(clockin_stuschool);
-				new_mci.setClockinSucceed(Short.parseShort("1"));
-				new_mci.setClockinTime(clockin_time);
-				new_mci.setLatitude(latitude);
-				new_mci.setLongitude(longitude);
-				morningclockinMapper.insert(new_mci);
-				return 1;
-			}
-			else {*/
+    		Basetrace cdm = basetraceservice.findbyid(baseid);
+    		float DTW = DTW(clockin_trace,cdm.gettrace());
+			if(DTW<=2.0) {
 				Runclockin new_mci = new Runclockin();
-				new_mci.setClockinTrace(clockin_trace);;
+				new_mci.setClockinTrace(clockin_trace);
 				new_mci.setClockinIp(clockin_ip);
 				new_mci.setClockinStuid(clockin_stuid);
 				new_mci.setClockinStuschool(clockin_stuschool);
@@ -77,9 +99,27 @@ public class RunclockinServiceImpl implements RunclockinService {
 				new_mci.setClockinTime(clockin_time);
 				new_mci.setRunLength(run_length);
 				new_mci.setRunTime(run_time);
+				new_mci.setBaseid(baseid);
+				new_mci.setDtw(DTW);
 				mongoTemplate.save(new_mci);
+				totalService.addrun(clockin_stuid, clockin_stuschool);
 				return 1;
-			//}
+			}
+			else {
+				Runclockin new_mci = new Runclockin();
+				new_mci.setClockinTrace(clockin_trace);;
+				new_mci.setClockinIp(clockin_ip);
+				new_mci.setClockinStuid(clockin_stuid);
+				new_mci.setClockinStuschool(clockin_stuschool);
+				new_mci.setClockinSucceed(Short.parseShort("0"));
+				new_mci.setClockinTime(clockin_time);
+				new_mci.setRunLength(run_length);
+				new_mci.setRunTime(run_time);
+				new_mci.setBaseid(baseid);
+				new_mci.setDtw(DTW);
+				mongoTemplate.save(new_mci);
+				return 0;
+			}
     	}
     	long mci_time = mci.getClockinTime();
     	Date mci_date = new Date(mci_time);
@@ -87,44 +127,53 @@ public class RunclockinServiceImpl implements RunclockinService {
 		String[] mci_datestr = mci_dateformat.format(mci_date).toString().split("-");
 		int mci_month = Integer.parseInt(mci_datestr[0]);
 		int mci_day = Integer.parseInt(mci_datestr[1]);
-		/*System.out.println(month);
-		System.out.println(mci_month);
-		System.out.println(day);
-		System.out.println(mci_day);*/
 		if(mci_month == month && mci_day == day) {
 			return 2; // 已经打过卡了
 		}
-		/*else {
-			Codemodel cdm = codemodelMapper.findbytime(month,day,hour,minute);
-			if(cdm.getBornString().equals(clockin_code)) {
-				Morningclockin new_mci = new Morningclockin();
-				new_mci.setClockinCode(clockin_code);
+		else {
+			Basetrace cdm = basetraceservice.findbyid(baseid);
+    		float DTW = DTW(clockin_trace,cdm.gettrace());
+			if(DTW<=2.0) {
+				Runclockin new_mci = new Runclockin();
+				new_mci.setClockinTrace(clockin_trace);
 				new_mci.setClockinIp(clockin_ip);
 				new_mci.setClockinStuid(clockin_stuid);
 				new_mci.setClockinStuschool(clockin_stuschool);
 				new_mci.setClockinSucceed(Short.parseShort("1"));
 				new_mci.setClockinTime(clockin_time);
-				new_mci.setLatitude(latitude);
-				new_mci.setLongitude(longitude);
-				morningclockinMapper.insert(new_mci);
-				System.out.println(3);
+				new_mci.setRunLength(run_length);
+				new_mci.setRunTime(run_time);
+				new_mci.setBaseid(baseid);
+				new_mci.setDtw(DTW);
+				mongoTemplate.save(new_mci);
+				totalService.addrun(clockin_stuid, clockin_stuschool);
 				return 1;
 			}
 			else {
-				Morningclockin new_mci = new Morningclockin();
-				new_mci.setClockinCode(clockin_code);
+				Runclockin new_mci = new Runclockin();
+				new_mci.setClockinTrace(clockin_trace);;
 				new_mci.setClockinIp(clockin_ip);
 				new_mci.setClockinStuid(clockin_stuid);
 				new_mci.setClockinStuschool(clockin_stuschool);
 				new_mci.setClockinSucceed(Short.parseShort("0"));
 				new_mci.setClockinTime(clockin_time);
-				new_mci.setLatitude(latitude);
-				new_mci.setLongitude(longitude);
-				morningclockinMapper.insert(new_mci);
-				System.out.println(4);
+				new_mci.setRunLength(run_length);
+				new_mci.setRunTime(run_time);
+				new_mci.setBaseid(baseid);
+				new_mci.setDtw(DTW);
+				mongoTemplate.save(new_mci);
 				return 0;
 			}
-		}*/
-		return 3;
+		}
+    }
+    @Override
+    public List<Runclockin> getmine(String clockin_stuid, String clockin_stuschool){
+    	Query query = new Query(Criteria.where("clockinStuid").is(clockin_stuid).and("clockinStuschool").is(clockin_stuschool));
+    	return mongoTemplate.find(query, Runclockin.class);
+    }
+    @Override
+    public List<Runclockin> getall(String clockin_stuschool){
+    	Query query = new Query(Criteria.where("clockinStuschool").is(clockin_stuschool));
+    	return mongoTemplate.find(query, Runclockin.class);
     }
 }

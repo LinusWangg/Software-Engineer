@@ -56,4 +56,19 @@ public class AppealController {
     	int flag = appealService.finish(appeal_stuid,appeal_school,appeal_time,appeal_adminid,appeal_condition);
     	return flag;
     }
+    
+    @RequestMapping(path="getall",method=RequestMethod.POST,produces="application/json")
+    public List<Appeal> getall(
+    		@RequestBody HashMap<String, String> map) {
+    	String appeal_school = map.get("appeal_stuschool");
+    	return appealService.getall(appeal_school);
+    }
+    
+    @RequestMapping(path="getmine",method=RequestMethod.POST,produces="application/json")
+    public List<Appeal> getmine(
+    		@RequestBody HashMap<String, String> map) {
+    	String appeal_stuid = map.get("appeal_stuid");
+    	String appeal_school = map.get("appeal_stuschool");
+    	return appealService.getmine(appeal_stuid,appeal_school);
+    }
 }

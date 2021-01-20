@@ -93,5 +93,6 @@
   <select id="getall" parameterType="com.example.demo.model.Morningclockin" resultMap="BaseResultMap">
     select * 
     from morningclockin
+    where Clockin_stuschool = #{clockin_stuschool,jdbcType=VARCHAR}
   </select>
 </mapper>
