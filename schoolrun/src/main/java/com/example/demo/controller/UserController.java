@@ -42,24 +42,22 @@ public class UserController {
     }
     
     @RequestMapping(path="update",method=RequestMethod.POST,produces="application/json")
-    public int updateUser(
+    public User updateUser(
     		@RequestBody HashMap<String, String> map) {
     	String usercount = map.get("usercount");
     	String userid = map.get("userid");
     	String username = map.get("username");
     	String phonenum = map.get("phonenum");
     	String userschool = map.get("userschool");
-    	int flag = userService.updateUser(usercount,userid,username,phonenum,userschool);
-    	return flag;
+    	return userService.updateUser(usercount,userid,username,phonenum,userschool);
     }
     
     @RequestMapping(path="login",method=RequestMethod.POST,produces="application/json")
-    public int loginUser(
+    public User loginUser(
     		@RequestBody HashMap<String, String> map) {
     	String usercount = map.get("usercount");
     	String userpassword = map.get("userpassword");
-    	int flag = userService.loginUser(usercount,userpassword);
-    	return flag;
+    	return userService.loginUser(usercount,userpassword);
     }
 
     @RequestMapping(path="modify",method=RequestMethod.POST,produces="application/json")

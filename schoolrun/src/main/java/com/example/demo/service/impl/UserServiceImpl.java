@@ -33,21 +33,27 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public int updateUser(String usercount,String userid,String username,String phonenum,String userschool) {
-    	int flag = userMapper.updateUser(usercount,userid,username,"stu",phonenum,userschool);
-    	return flag;
+    public User updateUser(String usercount,String userid,String username,String phonenum,String userschool) {
+    	userMapper.updateUser(usercount,userid,username,"stu",phonenum,userschool);
+    	User user = new User();
+    	user.setPhonenum(phonenum);
+    	user.setUserid(userid);
+    	user.setUserschool(userschool);
+    	user.setUsername(username);
+    	return user;
     }
     
     @Override
-    public int loginUser(String usercount,String userpassword) {
+    public User loginUser(String usercount,String userpassword) {
     	User user = userMapper.findbycount(usercount);
     	if(user == null) {
-    		return 0; //0-无此用户
+    		return null; //0-无此用户
     	}
     	if(!user.getUserpassword().equals(userpassword)) {
-    		return 1;//1-密码错误
+    		return null;//1-密码错误
     	}
-    	return 2;//2-登陆成功
+    	user.setUserpassword("AccessDined!");
+    	return user;//2-登陆成功
     }
     
     @Override
