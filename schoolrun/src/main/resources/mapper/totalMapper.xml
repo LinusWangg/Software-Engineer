@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.totalMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.model.total">
+    <constructor>
+      <arg column="run_time" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="mor_time" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="stuid" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="stuschool" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <insert id="insert" parameterType="com.example.demo.model.total">
+    insert into total (run_time, mor_time, stuid, 
+      stuschool)
+    values (#{runTime,jdbcType=INTEGER}, #{morTime,jdbcType=INTEGER}, #{stuid,jdbcType=VARCHAR}, 
+      #{stuschool,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.model.total">
+    insert into total
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="runTime != null">
+        run_time,
+      </if>
+      <if test="morTime != null">
+        mor_time,
+      </if>
+      <if test="stuid != null">
+        stuid,
+      </if>
+      <if test="stuschool != null">
+        stuschool,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="runTime != null">
+        #{runTime,jdbcType=INTEGER},
+      </if>
+      <if test="morTime != null">
+        #{morTime,jdbcType=INTEGER},
+      </if>
+      <if test="stuid != null">
+        #{stuid,jdbcType=VARCHAR},
+      </if>
+      <if test="stuschool != null">
+        #{stuschool,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="getmine" parameterType="com.example.demo.model.total" resultMap="BaseResultMap">
+    select * 
+    from total
+    where stuid = #{stuid,jdbcType=VARCHAR} AND
+    stuschool = #{stuschool,jdbcType=VARCHAR}
+  </select>
+  <select id="getall" parameterType="com.example.demo.model.total" resultMap="BaseResultMap">
+    select * 
+    from total
+    where stuschool = #{stuschool,jdbcType=VARCHAR}
+  </select>
+  <update id="addmor" parameterType="com.example.demo.model.User">
+        update total
+        <set>
+            mor_time = #{mor_time,jdbcType=INTEGER},
+        </set>
+        where stuid = #{stuid,jdbcType=VARCHAR} AND
+        stuschool = #{stuschool,jdbcType=VARCHAR}
+  </update>
+  <update id="addrun" parameterType="com.example.demo.model.User">
+        update total
+        <set>
+            run_time = #{run_time,jdbcType=INTEGER},
+        </set>
+        where stuid = #{stuid,jdbcType=VARCHAR} AND
+        stuschool = #{stuschool,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -13,18 +13,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.model.Morningclockin;
-import com.example.demo.service.MorningclockinService;
-import com.example.demo.service.UserService;
+import com.example.demo.model.Runclockin;
+import com.example.demo.service.RunclockinService;
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("/morningclockin")
-public class MorningclockinController {
+@RequestMapping("/runclockin")
+public class RunclockinController {
 
     // 注入mapper类
     @Resource
-    private MorningclockinService morningclockinService;
+    private RunclockinService runclockinService;
 
     /*@RequestMapping(value="{id}", method=RequestMethod.GET, produces="application/json")
     public User getUser(@PathVariable long id) throws Exception {
@@ -40,26 +43,28 @@ public class MorningclockinController {
     	String clockin_stuid = map.get("clockin_stuid");
     	String clockin_stuschool = map.get("clockin_stuschool");
     	long clockin_time = Long.parseLong(map.get("clockin_time"));
-    	String clockin_code = map.get("clockin_code");
+    	JSONArray clockin_trace = JSONArray.parseArray(map.get("clockin_trace"));
+    	float run_length = Float.parseFloat(map.get("run_length")); 
+    	int run_time = Integer.parseInt(map.get("run_time"));
     	String clockin_ip = map.get("clockin_ip");
-    	float longitude = Float.parseFloat(map.get("longitude"));
-    	float latitude = Float.parseFloat(map.get("latitude"));
-    	int flag = morningclockinService.clockin(clockin_stuid,clockin_stuschool,clockin_time,clockin_code,clockin_ip,longitude,latitude);
+    	int baseid = Integer.parseInt(map.get("basetraceid"));
+    	int flag = runclockinService.clockin(clockin_stuid,clockin_stuschool,clockin_time,clockin_trace,run_length,run_time,clockin_ip,baseid);
     	return flag;
     }
     
     @RequestMapping(path="getmine",method=RequestMethod.POST,produces="application/json")
-    public List<Morningclockin> getmine(
+    public List<Runclockin> getmine(
     		@RequestBody HashMap<String, String> map) {
     	String clockin_stuid = map.get("clockin_stuid");
     	String clockin_stuschool = map.get("clockin_stuschool");
-    	return morningclockinService.getmine(clockin_stuid,clockin_stuschool);
+    	return runclockinService.getmine(clockin_stuid,clockin_stuschool);
     }
     
     @RequestMapping(path="getall",method=RequestMethod.POST,produces="application/json")
-    public List<Morningclockin> getall(
+    public List<Runclockin> getall(
     		@RequestBody HashMap<String, String> map) {
     	String clockin_stuschool = map.get("clockin_stuschool");
-    	return morningclockinService.getall(clockin_stuschool);
+    	return runclockinService.getall(clockin_stuschool);
     }
+    
 }

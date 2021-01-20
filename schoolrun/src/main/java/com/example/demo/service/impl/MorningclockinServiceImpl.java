@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.Morningclockin;
@@ -14,6 +15,7 @@ import com.example.demo.model.Codemodel;
 import com.example.demo.repository.MorningclockinMapper;
 import com.example.demo.repository.CodemodelMapper;
 import com.example.demo.service.MorningclockinService;
+import com.example.demo.service.totalService;
 import com.github.pagehelper.PageHelper;
 
 @Service("morningService")
@@ -24,6 +26,8 @@ public class MorningclockinServiceImpl implements MorningclockinService {
     private MorningclockinMapper morningclockinMapper;
     @Resource
     private CodemodelMapper codemodelMapper;
+    @Autowired
+    private totalService totalService;
     
     @Override
     public int clockin(String clockin_stuid, String clockin_stuschool, long clockin_time, String clockin_code,
@@ -50,7 +54,7 @@ public class MorningclockinServiceImpl implements MorningclockinService {
 				new_mci.setLatitude(latitude);
 				new_mci.setLongitude(longitude);
 				morningclockinMapper.insert(new_mci);
-				System.out.println(1);
+				totalService.addmor(clockin_stuid, clockin_stuschool);
 				return 1;
 			}
 			else {
@@ -64,7 +68,6 @@ public class MorningclockinServiceImpl implements MorningclockinService {
 				new_mci.setLatitude(latitude);
 				new_mci.setLongitude(longitude);
 				morningclockinMapper.insert(new_mci);
-				System.out.println(2);
 				return 0;
 			}
     	}
@@ -75,7 +78,6 @@ public class MorningclockinServiceImpl implements MorningclockinService {
 		int mci_month = Integer.parseInt(mci_datestr[0]);
 		int mci_day = Integer.parseInt(mci_datestr[1]);
 		if(mci_month == month && mci_day == day) {
-			System.out.println(5);
 			return 2; // 已经打过卡了
 		}
 		else {
@@ -91,7 +93,7 @@ public class MorningclockinServiceImpl implements MorningclockinService {
 				new_mci.setLatitude(latitude);
 				new_mci.setLongitude(longitude);
 				morningclockinMapper.insert(new_mci);
-				System.out.println(3);
+				totalService.addmor(clockin_stuid, clockin_stuschool);
 				return 1;
 			}
 			else {
@@ -105,15 +107,16 @@ public class MorningclockinServiceImpl implements MorningclockinService {
 				new_mci.setLatitude(latitude);
 				new_mci.setLongitude(longitude);
 				morningclockinMapper.insert(new_mci);
-				System.out.println(4);
 				return 0;
 			}
 		}
     }
+    @Override
     public List<Morningclockin> getmine(String clockin_stuid, String clockin_stuschool){
 		return morningclockinMapper.getmine(clockin_stuid, clockin_stuschool);
     }
-    public List<Morningclockin> getall(){
-    	return morningclockinMapper.getall();
+    @Override
+    public List<Morningclockin> getall(String clockin_stuschool){
+    	return morningclockinMapper.getall(clockin_stuschool);
     }
 }

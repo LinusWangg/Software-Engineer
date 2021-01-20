@@ -1,5 +1,7 @@
 package com.example.demo.repository;
 
+import java.util.List;
+
 import com.example.demo.model.Appeal;
 
 public interface AppealMapper {
@@ -8,4 +10,8 @@ public interface AppealMapper {
     int insertSelective(Appeal record);
 
 	int finish(String appeal_stuid, String appeal_school, long appeal_time, String appeal_adminid, int appeal_condition);
+	
+	List<Appeal> getall(String appeal_school);
+
+	List<Appeal> getmine(String appeal_stuid, String appeal_school);
 }

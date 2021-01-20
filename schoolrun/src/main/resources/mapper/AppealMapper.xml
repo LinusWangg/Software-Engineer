@@ -72,4 +72,15 @@
         Appeal_school = #{appeal_school,jdbcType=VARCHAR} AND
         Appeal_time = #{appeal_time,jdbcType=BIGINT}
   </update>
+  <select id="getall" parameterType="com.example.demo.model.Appeal" resultMap="BaseResultMap">
+    select *
+    from appeal
+    where Appeal_school = #{appeal_school,jdbcType=VARCHAR}
+  </select>
+  <select id="getmine" parameterType="com.example.demo.model.Appeal" resultMap="BaseResultMap">
+    select *
+    from appeal
+    where Appeal_school = #{appeal_school,jdbcType=VARCHAR} AND
+    Appeal_stuid = #{appeal_stuid,jdbcType=VARCHAR}
+  </select>
 </mapper>
