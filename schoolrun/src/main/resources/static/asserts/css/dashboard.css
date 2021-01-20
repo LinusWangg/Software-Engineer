@@ -1,0 +1,94 @@
+body {
+  font-size: .875rem;
+}
+
+.feather {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
+}
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+  position: fixed !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  z-index: 100 !important; /* Behind the navbar */
+  padding: 0 !important;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1) !important;
+}
+
+.sidebar-sticky {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 48px !important; /* Height of navbar */
+  height: calc(100vh - 48px) !important;
+  padding-top: .5rem !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important; /* Scrollable contents if viewport is shorter than content. */
+}
+
+.sidebar .nav-link {
+  font-weight: 500 !important;
+  color: #333 !important;
+}
+
+.sidebar .nav-link .feather {
+  margin-right: 4px !important;
+  color: #999 !important;
+}
+
+.sidebar .nav-link.active {
+  color: #007bff !important;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit !important;
+}
+
+.sidebar-heading {
+  font-size: .75rem !important;
+  text-transform: uppercase !important;
+}
+
+/*
+ * Navbar
+ */
+
+.navbar-brand {
+  padding-top: .75rem !important;
+  padding-bottom: .75rem !important;
+  font-size: 1rem !important;
+  background-color: rgba(0, 0, 0, .25) !important;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25) !important;
+}
+
+.navbar .form-control {
+  padding: .75rem 1rem !important;
+  border-width: 0 !important;
+  border-radius: 0 !important;
+}
+
+.form-control-dark {
+  color: #fff !important;
+  background-color: rgba(255, 255, 255, .1) !important;
+  border-color: rgba(255, 255, 255, .1) !important;
+}
+
+.form-control-dark:focus {
+  border-color: transparent !important;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .25) !important;
+}
+
+/*
+ * Utilities
+ */
+
+.border-top { border-top: 1px solid #e5e5e5 !important; }
+.border-bottom { border-bottom: 1px solid #e5e5e5 !important; }
+.border-bottom { border-bottom: 1px solid #e5e5e5 !important; }

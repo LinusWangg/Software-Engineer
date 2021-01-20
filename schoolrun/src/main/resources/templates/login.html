@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>“校园跑”微信小程序后台</title>
+		<!-- Bootstrap core CSS -->
+		<link href="/static/asserts/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Custom styles for this template -->
+		<link href="/static/asserts/css/signin.css" rel="stylesheet">
+		<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    	<script src="/static/jquery.form.js"></script>
+    	<script>
+	$(function(){
+	$("#login").click(function(){
+		var password = $("input[name=password]").val();
+		var username = $("input[name=username]").val();
+		if(password.length<8)
+		{
+			if(password.length==0)
+			{
+				alert("Please Enter the password!");	
+			}
+			else
+			{
+				alert("Password Too Short!");
+			}	
+		}
+		if(username.length==0)
+		{
+			alert("Please Enter the username!");	
+		}
+		if(password.length>=8&&username.length>0)
+		{
+			$.ajax({
+				url:"/user/login",
+				type:"post",
+				contentType: "application/json",
+				data:JSON.stringify({
+					usercount:username,
+					userpassword:password,
+				}),
+				dataType:"json",
+				success:function(result){
+					if(result){
+						alert("Succeed!");
+					}
+					else if(!result){
+						alert("The account is not correct!Who are you!");
+					}
+				}
+			})
+		}
+	})
+	})
+	
+</script>
+	</head>
+	<body class="text-center">
+			<img class="mb-4" src="./static/asserts/img/bootstrap-solid.svg" alt="" width="72" height="72">
+
+			<!--判断-->
+			<div class="alert alert-danger" role="alert">...</div>
+			<div class="alert alert-secondary" role="alert">Please Sign In</div>
+			<label class="sr-only">Username</label>
+			<input type="text"  name="username" class="form-control" placeholder="Username">
+			<label class="sr-only">Password</label>
+			<input type="password" name="password" class="form-control" placeholder="Password">
+			<div class="checkbox mb-3">
+				<label>
+          			<input type="checkbox" value="remember-me"/> Remember me
+        		</label>
+			</div>
+			<div id="login">
+				<input class="btn btn-lg btn-primary btn-block" type="button">Sign in
+			</div>
+	</body>
+</html>

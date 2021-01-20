@@ -8,4 +8,9 @@ public class HTMLControl {
     public String index(){
         return "QRCode";
     }
+    
+    @RequestMapping("/login")
+    public String index2(){
+        return "login";
+    }
 }
