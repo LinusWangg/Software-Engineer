@@ -3,7 +3,7 @@ package com.example.demo.model;
 public class Codemodel {
     private Integer bornMonth;
 
-    private Integer bronDay;
+    private Integer bornDay;
 
     private Integer bornHour;
 
@@ -13,9 +13,9 @@ public class Codemodel {
 
     private String picAddress;
 
-    public Codemodel(Integer bornMonth, Integer bronDay, Integer bornHour, Integer bornMinute, String bornString, String picAddress) {
+    public Codemodel(Integer bornMonth, Integer bornDay, Integer bornHour, Integer bornMinute, String bornString, String picAddress) {
         this.bornMonth = bornMonth;
-        this.bronDay = bronDay;
+        this.bornDay = bornDay;
         this.bornHour = bornHour;
         this.bornMinute = bornMinute;
         this.bornString = bornString;
@@ -34,12 +34,12 @@ public class Codemodel {
         this.bornMonth = bornMonth;
     }
 
-    public Integer getBronDay() {
-        return bronDay;
+    public Integer getBornDay() {
+        return bornDay;
     }
 
-    public void setBronDay(Integer bronDay) {
-        this.bronDay = bronDay;
+    public void setBornDay(Integer bornDay) {
+        this.bornDay = bornDay;
     }
 
     public Integer getBornHour() {
