@@ -18,12 +18,16 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     
     @Override
-    public int registUser(String usercount,String userpassword) {
+    public int registUser(String usercount,String userpassword,String userid,String username,String phonenum,String userschool) {
     	User user = userMapper.findbycount(usercount);
     	if(user == null) {
     		User temp = new User();
     		temp.setUsercount(usercount);
     		temp.setUserpassword(userpassword);
+    		temp.setPhonenum(phonenum);
+    		temp.setUserid(userid);
+    		temp.setUserschool(userschool);
+    		temp.setUsername(username);
     		userMapper.insertSelective(temp);
     		return 1;
     	}

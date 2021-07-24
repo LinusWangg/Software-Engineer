@@ -32,18 +32,22 @@ public class UserController {
         return user;
     }*/
     
-    @RequestMapping(path="regist",method=RequestMethod.POST,produces="application/json")
+    @RequestMapping(path="regist",method=RequestMethod.POST)
     public int registUser(
-    		@RequestBody HashMap<String, String> map) {
+    		@RequestParam HashMap<String, String> map) {
     	String usercount = map.get("usercount");
     	String userpassword = map.get("userpassword");
-    	int flag = userService.registUser(usercount,userpassword);
+    	String userid = map.get("userid");
+    	String username = map.get("username");
+    	String phonenum = map.get("phonenum");
+    	String userschool = map.get("userschool");
+    	int flag = userService.registUser(usercount,userpassword,userid,username,phonenum,userschool);
     	return flag;
     }
     
-    @RequestMapping(path="update",method=RequestMethod.POST,produces="application/json")
+    @RequestMapping(path="update",method=RequestMethod.POST)
     public User updateUser(
-    		@RequestBody HashMap<String, String> map) {
+    		@RequestParam HashMap<String, String> map) {
     	String usercount = map.get("usercount");
     	String userid = map.get("userid");
     	String username = map.get("username");
@@ -52,17 +56,17 @@ public class UserController {
     	return userService.updateUser(usercount,userid,username,phonenum,userschool);
     }
     
-    @RequestMapping(path="login",method=RequestMethod.POST,produces="application/json")
+    @RequestMapping(path="login",method=RequestMethod.POST)
     public User loginUser(
-    		@RequestBody HashMap<String, String> map) {
+    		@RequestParam HashMap<String, String> map) {
     	String usercount = map.get("usercount");
     	String userpassword = map.get("userpassword");
     	return userService.loginUser(usercount,userpassword);
     }
 
-    @RequestMapping(path="modify",method=RequestMethod.POST,produces="application/json")
+    @RequestMapping(path="modify",method=RequestMethod.POST)
     public int modifyUser(
-    		@RequestBody HashMap<String, String> map){
+    		@RequestParam HashMap<String, String> map){
     	String usercount = map.get("usercount");
     	String userpassword = map.get("userpassword");
     	String modify_userpassword = map.get("modify_password");

@@ -37,9 +37,9 @@ public class RunclockinController {
         return user;
     }*/
     
-    @RequestMapping(path="clockin",method=RequestMethod.POST,produces="application/json")
+    @RequestMapping(path="clockin",method=RequestMethod.POST)
     public int clockin(
-    		@RequestBody HashMap<String, String> map) {
+    		@RequestParam HashMap<String, String> map) {
     	String clockin_stuid = map.get("clockin_stuid");
     	String clockin_stuschool = map.get("clockin_stuschool");
     	long clockin_time = Long.parseLong(map.get("clockin_time"));
@@ -52,12 +52,21 @@ public class RunclockinController {
     	return flag;
     }
     
-    @RequestMapping(path="getmine",method=RequestMethod.POST,produces="application/json")
+    @RequestMapping(path="getmine",method=RequestMethod.POST)
     public List<Runclockin> getmine(
-    		@RequestBody HashMap<String, String> map) {
+    		@RequestParam HashMap<String, String> map) {
     	String clockin_stuid = map.get("clockin_stuid");
     	String clockin_stuschool = map.get("clockin_stuschool");
     	return runclockinService.getmine(clockin_stuid,clockin_stuschool);
+    }
+    
+    @RequestMapping(path="gettodaykm",method=RequestMethod.POST)
+    public float gettodaykm(
+    		@RequestParam HashMap<String, String> map) {
+    	String clockin_stuid = map.get("clockin_stuid");
+    	String clockin_stuschool = map.get("clockin_stuschool");
+    	float distance = runclockinService.gettodaykm(clockin_stuid, clockin_stuschool);
+    	return distance;
     }
     
     @RequestMapping(path="getall",method=RequestMethod.POST,produces="application/json")

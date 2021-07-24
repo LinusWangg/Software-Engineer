@@ -25,7 +25,7 @@ public class CodemodelController {
     @Resource
     private CodemodelService codemodelService;
 
-    @RequestMapping(path="showallcode",method=RequestMethod.GET,produces="application/json")
+    @RequestMapping(path="showallcode",method=RequestMethod.GET)
     public List<Codemodel> getallcode(){
     	return codemodelService.getallcode();
     }

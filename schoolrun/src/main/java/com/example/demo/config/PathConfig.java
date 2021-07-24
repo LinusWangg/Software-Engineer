@@ -9,7 +9,7 @@ public class PathConfig extends WebMvcConfigurerAdapter{
  
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations("src/main/resources/static/");
+        registry.addResourceHandler("/**").addResourceLocations("file:G:\\Java-workbench\\schoolrun\\src\\main\\resources\\static\\");
         super.addResourceHandlers(registry);
     }
  

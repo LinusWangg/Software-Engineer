@@ -33,9 +33,9 @@ public class AppealController {
         return user;
     }*/
     
-    @RequestMapping(path="submit",method=RequestMethod.POST,produces="application/json")
+    @RequestMapping(path="submit",method=RequestMethod.POST)
     public int submit(
-    		@RequestBody HashMap<String, String> map) {
+    		@RequestParam HashMap<String, String> map) {
     	String appeal_stuid = map.get("appeal_stuid");
     	String appeal_school = map.get("appeal_stuschool");
     	long appeal_time = Long.parseLong(map.get("appeal_time"));
@@ -64,9 +64,9 @@ public class AppealController {
     	return appealService.getall(appeal_school);
     }
     
-    @RequestMapping(path="getmine",method=RequestMethod.POST,produces="application/json")
+    @RequestMapping(path="getmine",method=RequestMethod.POST)
     public List<Appeal> getmine(
-    		@RequestBody HashMap<String, String> map) {
+    		@RequestParam HashMap<String, String> map) {
     	String appeal_stuid = map.get("appeal_stuid");
     	String appeal_school = map.get("appeal_stuschool");
     	return appealService.getmine(appeal_stuid,appeal_school);

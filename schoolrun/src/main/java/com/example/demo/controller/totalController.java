@@ -36,9 +36,9 @@ public class totalController {
         return user;
     }*/
     
-    @RequestMapping(path="getmine",method=RequestMethod.POST,produces="application/json")
+    @RequestMapping(path="getmine",method=RequestMethod.POST)
     public total getmine(
-    		@RequestBody HashMap<String, String> map) {
+    		@RequestParam HashMap<String, String> map) {
     	String stuid = map.get("stuid");
     	String stuschool = map.get("stuschool");
     	return totalService.getmine(stuid,stuschool);

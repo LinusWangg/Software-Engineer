@@ -28,9 +28,11 @@ import com.github.pagehelper.PageHelper;
 
 @Service("runService")
 public class RunclockinServiceImpl implements RunclockinService {
-	@Autowired
+	@Resource
 	private MongoTemplate mongoTemplate;
+	@Resource
 	private BasetraceService basetraceservice;
+	@Resource
 	private totalService totalService;
     // 注入mapper类
 	@Override
@@ -44,8 +46,8 @@ public class RunclockinServiceImpl implements RunclockinService {
 	}
 	
 	public float distance(JSONObject a,JSONObject b) {
-		return Math.abs(Float.parseFloat((String) a.get("latitude")) - Float.parseFloat((String) b.get("latitude")))
-				+Math.abs(Float.parseFloat((String) a.get("longitude")) - Float.parseFloat((String) b.get("longitude")));
+		return Math.abs(Float.parseFloat(a.get("latitude").toString()) - Float.parseFloat(b.get("latitude").toString()))
+				+Math.abs(Float.parseFloat(a.get("longitude").toString()) - Float.parseFloat(b.get("longitude").toString()));
 	}
 	
 	public float cla_min(float a,float b,float c) {
@@ -175,5 +177,33 @@ public class RunclockinServiceImpl implements RunclockinService {
     public List<Runclockin> getall(String clockin_stuschool){
     	Query query = new Query(Criteria.where("clockinStuschool").is(clockin_stuschool));
     	return mongoTemplate.find(query, Runclockin.class);
+    }
+    
+    @Override
+    public float gettodaykm(String clockin_stuid, String clockin_stuschool) {
+    	Query query = new Query(Criteria.where("clockinStuid").is(clockin_stuid).and("clockinStuschool").is(clockin_stuschool));
+    	long now_time = System.currentTimeMillis()/1000;
+    	Date now_date = new Date(now_time);
+		DateFormat now_dateformat = new SimpleDateFormat("MM-dd-HH-mm");
+		String[] now_datestr = now_dateformat.format(now_date).toString().split("-");
+		int now_month = Integer.parseInt(now_datestr[0]);
+		int now_day = Integer.parseInt(now_datestr[1]);
+		List<Runclockin> List_mine = mongoTemplate.find(query, Runclockin.class);
+		Runclockin latest = List_mine.get(List_mine.size()-1);
+		if(latest == null) {
+			return 0;
+		}
+		long latest_time = latest.getClockinTime();
+		Date latest_date = new Date(latest_time);
+		DateFormat latest_dateformat = new SimpleDateFormat("MM-dd-HH-mm");
+		String[] latest_datestr = latest_dateformat.format(latest_date).toString().split("-");
+		int latest_month = Integer.parseInt(latest_datestr[0]);
+		int latest_day = Integer.parseInt(latest_datestr[1]);
+		if(latest_month == now_month && latest_day == now_day) {
+			return latest.getRunLength();
+		}
+		else {
+			return 0;
+		}
     }
 }

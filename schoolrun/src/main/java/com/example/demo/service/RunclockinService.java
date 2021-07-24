@@ -17,4 +17,6 @@ public interface RunclockinService {
 
 	public List<Runclockin> getall(String clockin_stuschool);
 	
+	public float gettodaykm(String clockin_stuid, String clockin_stuschool);
+	
 }
