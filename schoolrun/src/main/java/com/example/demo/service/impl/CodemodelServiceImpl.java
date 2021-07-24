@@ -70,7 +70,7 @@ public class CodemodelServiceImpl implements CodemodelService {
 			Codemodel temp = new Codemodel();
 			temp.setBornString(born_string);
 			temp.setBornMonth(month);
-			temp.setBronDay(day);
+			temp.setBornDay(day);
 			temp.setBornHour(hour);
 			temp.setBornMinute(minute);
 			int width = 300; // 二维码图片宽度

@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.example.demo.model.Codemodel">
     <constructor>
       <arg column="Born_month" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="Bron_day" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="Born_day" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="Born_hour" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="Born_minute" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="Born_string" javaType="java.lang.String" jdbcType="VARCHAR" />
@@ -12,10 +12,10 @@
     </constructor>
   </resultMap>
   <insert id="insert" parameterType="com.example.demo.model.Codemodel">
-    insert into codemodel (Born_month, Bron_day, Born_hour, 
+    insert into codemodel (Born_month, Born_day, Born_hour, 
       Born_minute, Born_string, pic_address
       )
-    values (#{bornMonth,jdbcType=INTEGER}, #{bronDay,jdbcType=INTEGER}, #{bornHour,jdbcType=INTEGER}, 
+    values (#{bornMonth,jdbcType=INTEGER}, #{bornDay,jdbcType=INTEGER}, #{bornHour,jdbcType=INTEGER}, 
       #{bornMinute,jdbcType=INTEGER}, #{bornString,jdbcType=VARCHAR}, #{picAddress,jdbcType=VARCHAR}
       )
   </insert>
@@ -25,8 +25,8 @@
       <if test="bornMonth != null">
         Born_month,
       </if>
-      <if test="bronDay != null">
-        Bron_day,
+      <if test="bornDay != null">
+        Born_day,
       </if>
       <if test="bornHour != null">
         Born_hour,
@@ -45,8 +45,8 @@
       <if test="bornMonth != null">
         #{bornMonth,jdbcType=INTEGER},
       </if>
-      <if test="bronDay != null">
-        #{bronDay,jdbcType=INTEGER},
+      <if test="bornDay != null">
+        #{bornDay,jdbcType=INTEGER},
       </if>
       <if test="bornHour != null">
         #{bornHour,jdbcType=INTEGER},
@@ -63,7 +63,7 @@
     </trim>
   </insert>
   <sql id="Base_Column_List">
-    born_month,bron_day,born_hour,born_minute,born_string,pic_address
+    born_month,born_day,born_hour,born_minute,born_string,pic_address
   </sql>
   <select id="getallcode" resultMap="BaseResultMap">
     select 
@@ -75,7 +75,7 @@
     <include refid="Base_Column_List" />
     from codemodel
     where Born_month = #{month,jdbcType=INTEGER} AND
-    Bron_day = #{day,jdbcType=INTEGER} AND
+    Born_day = #{day,jdbcType=INTEGER} AND
     Born_hour = #{hour,jdbcType=INTEGER} AND
     Born_minute = #{minute,jdbcType=INTEGER}
   </select>
