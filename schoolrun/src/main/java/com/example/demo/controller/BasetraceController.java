@@ -36,7 +36,7 @@ public class BasetraceController {
         return user;
     }*/
     
-    @RequestMapping(path="writein",method=RequestMethod.POST,produces="application/json")
+    @RequestMapping(path="writein",method=RequestMethod.POST)
     public int writein(
     		@RequestBody HashMap<String, String> map) {
     	String school = map.get("school");
@@ -52,9 +52,9 @@ public class BasetraceController {
     	return basetraceService.getall(school);
     }
     
-    @RequestMapping(path="get3",method=RequestMethod.POST,produces="application/json")
+    @RequestMapping(path="get3",method=RequestMethod.POST)
     public List<Basetrace> get3(
-    		@RequestBody HashMap<String, String> map){
+    		@RequestParam HashMap<String, String> map){
     	String school = map.get("school");
     	return basetraceService.get3(school);
     }

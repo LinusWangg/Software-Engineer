@@ -86,7 +86,7 @@ public class CodemodelServiceImpl implements CodemodelService {
 				e.printStackTrace();
 			}
 			File outputFile = new File("./src/main/resources/static/"+datestr[0]+'-'+datestr[1]+'-'+datestr[2]+'-'+datestr[3]+".jpg");
-			String picad = "/static/"+datestr[0]+'-'+datestr[1]+'-'+datestr[2]+'-'+datestr[3]+".jpg";
+			String picad = "/"+datestr[0]+'-'+datestr[1]+'-'+datestr[2]+'-'+datestr[3]+".jpg";
 			try {
 				MatrixToImageWriter.writeToFile(bitMatrix, format, outputFile);
 			} catch (IOException e) {

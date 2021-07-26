@@ -9,7 +9,7 @@ public interface UserService {
     
     public List<User> listUser(int page, int pageSize);
     
-    public int registUser(String usercount,String userpassword);
+    public int registUser(String usercount,String userpassword,String userid,String username,String phonenum,String userschool);
     
     public User updateUser(String usercount,String userid,String username,String phonenum,String userschool);
     
