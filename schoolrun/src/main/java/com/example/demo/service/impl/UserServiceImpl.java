@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
     		temp.setUserid(userid);
     		temp.setUserschool(userschool);
     		temp.setUsername(username);
+    		temp.setUsertype("S");
     		userMapper.insertSelective(temp);
     		return 1;
     	}

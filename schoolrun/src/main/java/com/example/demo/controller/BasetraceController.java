@@ -36,7 +36,7 @@ public class BasetraceController {
         return user;
     }*/
     
-    @RequestMapping(path="writein",method=RequestMethod.POST)
+    @RequestMapping(path="writein",method=RequestMethod.POST,produces="application/json")
     public int writein(
     		@RequestBody HashMap<String, String> map) {
     	String school = map.get("school");

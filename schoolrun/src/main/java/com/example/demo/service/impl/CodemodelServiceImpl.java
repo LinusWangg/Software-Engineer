@@ -1,6 +1,9 @@
 package com.example.demo.service.impl;
 
 import javax.annotation.Resource;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.Random;
 import java.text.DateFormat;
@@ -9,6 +12,8 @@ import java.util.Date;
 
 import java.util.Calendar;
 
+import com.alibaba.fastjson.JSONObject;
+import netscape.javascript.JSObject;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.Codemodel;
@@ -16,9 +21,6 @@ import com.example.demo.repository.CodemodelMapper;
 import com.example.demo.service.CodemodelService;
 import com.github.pagehelper.PageHelper;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
 import javax.imageio.ImageIO;
 import java.util.Hashtable;
 import com.google.zxing.common.BitMatrix;
@@ -50,6 +52,69 @@ public class CodemodelServiceImpl implements CodemodelService {
 	@Override
 	public List<Codemodel> getallcode() {
 		return codemodelMapper.getallcode();
+	}
+
+	public static String sendPostWithFile(String filePath) {
+		DataOutputStream out = null;
+		final String newLine = "\r\n";
+		final String prefix = "--";
+		StringBuilder result = new StringBuilder();
+		try {
+			URL url = new URL("https://sm.ms/api/v2/upload");
+			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+
+			String BOUNDARY = "-------7da2e536604c8";
+			conn.setRequestMethod("POST");
+			// 发送POST请求必须设置如下两行
+			conn.setDoOutput(true);
+			conn.setDoInput(true);
+			conn.setUseCaches(false);
+			conn.setRequestProperty("connection", "Keep-Alive");
+			conn.setRequestProperty("Charsert", "UTF-8");
+			conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + BOUNDARY);
+			conn.setRequestProperty("User-Agent","Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
+			conn.setRequestProperty("Authorization","iLVGYSLNvzn6EeoRtqCAamYS4CtGFVYO");
+			out = new DataOutputStream(conn.getOutputStream());
+
+			// 添加参数file
+			File file = new File(filePath);
+			StringBuilder sb1 = new StringBuilder();
+			sb1.append(prefix);
+			sb1.append(BOUNDARY);
+			sb1.append(newLine);
+			sb1.append("Content-Disposition: form-data;name=\"smfile\";filename=\"" + file.getName() + "\"" + newLine);
+			sb1.append("Content-Type:application/octet-stream");
+			sb1.append(newLine);
+			sb1.append(newLine);
+			out.write(sb1.toString().getBytes());
+			DataInputStream in = new DataInputStream(new FileInputStream(file));
+			byte[] bufferOut = new byte[1024];
+			int bytes = 0;
+			while ((bytes = in.read(bufferOut)) != -1) {
+				out.write(bufferOut, 0, bytes);
+			}
+			out.write(newLine.getBytes());
+			in.close();
+
+			byte[] end_data = ("\r\n--" + BOUNDARY + "--\r\n").getBytes();
+			// 写上结尾标识
+			out.write(end_data);
+			out.flush();
+			out.close();
+
+			// 定义BufferedReader输入流来读取URL的响应
+			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				result.append(line);
+				System.out.println(line);
+			}
+			return result.toString();
+		} catch (Exception e) {
+			System.out.println("发送POST请求出现异常！" + e);
+			e.printStackTrace();
+		}
+		return result.toString();
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -85,15 +150,20 @@ public class CodemodelServiceImpl implements CodemodelService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			File outputFile = new File("./src/main/resources/static/"+datestr[0]+'-'+datestr[1]+'-'+datestr[2]+'-'+datestr[3]+".jpg");
-			String picad = "/"+datestr[0]+'-'+datestr[1]+'-'+datestr[2]+'-'+datestr[3]+".jpg";
+			File file=new File(System.getProperty("user.dir")+"//static//");
+			if(!file.exists()){//如果文件夹不存在
+				file.mkdir();//创建文件夹
+			}
+			File outputFile = new File(System.getProperty("user.dir")+"//static//"+datestr[0]+'-'+datestr[1]+'-'+datestr[2]+'-'+datestr[3]+".jpg");
 			try {
 				MatrixToImageWriter.writeToFile(bitMatrix, format, outputFile);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			temp.setPicAddress(picad);
+			JSONObject jsonObject = JSONObject.parseObject(sendPostWithFile(outputFile.toString()));
+			jsonObject = JSONObject.parseObject(jsonObject.get("data").toString());
+			temp.setPicAddress(jsonObject.get("url").toString());
 			codemodelMapper.insertSelective(temp);
 			return temp;
 		}

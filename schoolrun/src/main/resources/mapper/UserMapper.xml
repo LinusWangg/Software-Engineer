@@ -79,7 +79,7 @@
     where userCount = #{usercount,jdbcType=VARCHAR}
   </select>
   <update id="updateUser" parameterType="com.example.demo.model.User">
-        update User
+        update user
         <set>
             <if test="userid != null">userID = #{userid,jdbcType=VARCHAR},</if>
             <if test="username != null">userName = #{username,jdbcType=VARCHAR},</if>
@@ -90,7 +90,7 @@
         where userCount = #{usercount,jdbcType=VARCHAR}
   </update>
   <update id="modifyUser" parameterType="com.example.demo.model.User">
-        update User
+        update user
         <set>
             userPassword = #{modify_userpassword,jdbcType=VARCHAR},
         </set>
