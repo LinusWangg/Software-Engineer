@@ -1,9 +1,14 @@
 package com.example.demo.utils;
 
+import com.example.demo.model.Appeal;
+import com.example.demo.model.Basetrace;
 import com.example.demo.model.Morningclockin;
 import com.example.demo.model.Runclockin;
+import com.example.demo.outDTO.appealDTO;
+import com.example.demo.outDTO.baseTraceDTO;
 import com.example.demo.outDTO.morningClockinDTO;
 import com.example.demo.outDTO.runClockinDTO;
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,6 +45,24 @@ public class Assembles {
         dto.setClockinSucceed(runclockin.getClockinSucceed());
         dto.setClockinTime(timeStamp2Date(runclockin.getClockinTime()));
         dto.setClockinStuid(runclockin.getClockinStuid());
+        return dto;
+    }
+
+    public static appealDTO assemble(Appeal appeal){
+        appealDTO dto = new appealDTO();
+        dto.setAppealAdminid(appeal.getAppealAdminid());
+        dto.setAppealCondition(appeal.getAppealCondition());
+        dto.setAppealContent(appeal.getAppealContent());
+        dto.setAppealSchool(appeal.getAppealSchool());
+        dto.setAppealStuid(appeal.getAppealStuid());
+        dto.setAppealTime(timeStamp2Date(appeal.getAppealTime()));
+        return dto;
+    }
+
+    public static baseTraceDTO assemble(Basetrace basetrace){
+        baseTraceDTO dto = new baseTraceDTO();
+        Gson gson = new Gson();
+        dto = gson.fromJson(gson.toJson(basetrace), baseTraceDTO.class);
         return dto;
     }
 

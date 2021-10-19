@@ -23,4 +23,14 @@ public class HTMLControl {
     public String index4(){
         return "run";
     }
+
+    @RequestMapping("/appeals")
+    public String index5(){
+        return "appeal";
+    }
+
+    @RequestMapping("/basetraces")
+    public String index6(){
+        return "basetrace";
+    }
 }

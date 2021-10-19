@@ -1,10 +1,13 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.example.demo.outDTO.baseTraceDTO;
+import com.example.demo.utils.Assembles;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,10 +49,15 @@ public class BasetraceController {
     }
     
     @RequestMapping(path="getall",method=RequestMethod.POST,produces="application/json")
-    public List<Basetrace> getall(
+    public List<baseTraceDTO> getall(
     		@RequestBody HashMap<String, String> map){
     	String school = map.get("school");
-    	return basetraceService.getall(school);
+    	List<Basetrace> basetraceList = basetraceService.getall(school);
+    	List<baseTraceDTO> respDTO = new ArrayList<baseTraceDTO>();
+    	for(Basetrace basetrace : basetraceList){
+    	    respDTO.add(Assembles.assemble(basetrace));
+        }
+    	return respDTO;
     }
     
     @RequestMapping(path="get3",method=RequestMethod.POST)

@@ -36,7 +36,7 @@
           this.$nextTick(()=>{
             var that=this;
             $.ajax({
-                url:"http://127.0.0.1:8080/runclockin/getall",
+                url:"/runclockin/getall",
                 type:"post",
                 contentType: "application/json",
                 data:JSON.stringify({
@@ -54,7 +54,7 @@
           submit:function(val){
             var that = this;
             $.ajax({
-              url:"http://127.0.0.1:8080/runclockin/getall",
+              url:"/runclockin/getall",
                 type:"post",
                 contentType: "application/json",
                 data:JSON.stringify({
@@ -72,16 +72,16 @@
             that.submit(val);
           },
           tomorning(){
-            window.location.href = "http://127.0.0.1:8080/morning";
+            window.location.href = "/morning";
           },
           torun(){
-              window.location.href = "http://127.0.0.1:8080/run";
+              window.location.href = "/run";
           },
           tobasetrace(){
-            window.location.href = "http://127.0.0.1:8080/basetraces";
+            window.location.href = "/basetraces";
           },
           toappeal(){
-            window.location.href = "http://127.0.0.1:8080/appeals";
+            window.location.href = "/appeals";
           },
         },
         delimiters:['${', '}']

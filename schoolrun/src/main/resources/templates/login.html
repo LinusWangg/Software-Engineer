@@ -24,7 +24,7 @@
                 if(password.length>=8)
                 {
                     $.ajax({
-                        url:"http://127.0.0.1:8080/user/adminLogin",
+                        url:"/user/adminLogin",
                         type:"post",
                         contentType: "application/json",
                         data:JSON.stringify({

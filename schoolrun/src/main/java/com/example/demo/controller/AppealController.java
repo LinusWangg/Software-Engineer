@@ -1,10 +1,13 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.example.demo.outDTO.appealDTO;
+import com.example.demo.utils.Assembles;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,10 +61,16 @@ public class AppealController {
     }
     
     @RequestMapping(path="getall",method=RequestMethod.POST,produces="application/json")
-    public List<Appeal> getall(
+    public List<appealDTO> getall(
     		@RequestBody HashMap<String, String> map) {
     	String appeal_school = map.get("appeal_stuschool");
-    	return appealService.getall(appeal_school);
+		int page = Integer.parseInt(map.get("page"));
+		List<Appeal> appealList = appealService.getall(appeal_school, page);
+		List<appealDTO> respDTO = new ArrayList<appealDTO>();
+		for(Appeal appeal : appealList){
+			respDTO.add(Assembles.assemble(appeal));
+		}
+    	return respDTO;
     }
     
     @RequestMapping(path="getmine",method=RequestMethod.POST)

@@ -76,6 +76,7 @@
     select *
     from appeal
     where Appeal_school = #{appeal_school,jdbcType=VARCHAR}
+    limit 20 offset #{offset}
   </select>
   <select id="getmine" parameterType="com.example.demo.model.Appeal" resultMap="BaseResultMap">
     select *
