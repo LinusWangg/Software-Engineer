@@ -73,4 +73,12 @@ public class UserController {
     	int flag = userService.modifyUser(usercount,userpassword,modify_userpassword);
     	return flag;
     }
+
+    @RequestMapping(path="adminLogin", method = RequestMethod.POST, produces="application/json")
+	public User adminLogin(
+			@RequestBody HashMap<String, String> map){
+		String usercount = map.get("usercount");
+		String userpassword = map.get("userpassword");
+		return userService.loginUser(usercount,userpassword);
+	}
 }

@@ -13,4 +13,14 @@ public class HTMLControl {
     public String index2(){
         return "login";
     }
+
+    @RequestMapping("/morning")
+    public String index3(){
+        return "morning";
+    }
+
+    @RequestMapping("/run")
+    public String index4(){
+        return "run";
+    }
 }

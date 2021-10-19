@@ -1,80 +1,96 @@
-<!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<title>“校园跑”微信小程序后台</title>
-		<!-- Bootstrap core CSS -->
-		<link href="/static/asserts/css/bootstrap.min.css" rel="stylesheet">
-		<!-- Custom styles for this template -->
-		<link href="/static/asserts/css/signin.css" rel="stylesheet">
-		<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    	<script src="/static/jquery.form.js"></script>
-    	<script>
-	$(function(){
-	$("#login").click(function(){
-		var password = $("input[name=password]").val();
-		var username = $("input[name=username]").val();
-		if(password.length<8)
-		{
-			if(password.length==0)
-			{
-				alert("Please Enter the password!");	
-			}
-			else
-			{
-				alert("Password Too Short!");
-			}	
-		}
-		if(username.length==0)
-		{
-			alert("Please Enter the username!");	
-		}
-		if(password.length>=8&&username.length>0)
-		{
-			$.ajax({
-				url:"/user/login",
-				type:"post",
-				contentType: "application/json",
-				data:JSON.stringify({
-					usercount:username,
-					userpassword:password,
-				}),
-				dataType:"json",
-				success:function(result){
-					if(result){
-						alert("Succeed!");
-					}
-					else if(!result){
-						alert("The account is not correct!Who are you!");
-					}
-				}
-			})
-		}
-	})
-	})
-	
-</script>
-	</head>
-	<body class="text-center">
-			<img class="mb-4" src="./static/asserts/img/bootstrap-solid.svg" alt="" width="72" height="72">
-
-			<!--判断-->
-			<div class="alert alert-danger" role="alert">...</div>
-			<div class="alert alert-secondary" role="alert">Please Sign In</div>
-			<label class="sr-only">Username</label>
-			<input type="text"  name="username" class="form-control" placeholder="Username">
-			<label class="sr-only">Password</label>
-			<input type="password" name="password" class="form-control" placeholder="Password">
-			<div class="checkbox mb-3">
-				<label>
-          			<input type="checkbox" value="remember-me"/> Remember me
-        		</label>
-			</div>
-			<div id="login">
-				<input class="btn btn-lg btn-primary btn-block" type="button">Sign in
-			</div>
-	</body>
-</html>
+<!doctype html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+	<script src="https://unpkg.com/vue@next"></script>
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="https://unpkg.com/element-plus/lib/theme-chalk/index.css">
+	<!-- 引入组件库 -->
+	<script src="https://unpkg.com/element-plus/lib/index.full.js"></script>
+	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+	<script>
+        $(function(){
+            $("#login").click(function(){
+                var useract = $("input[name=useract]").val();
+                var password = $("input[name=password]").val();
+                if(password.length<8)
+                {
+                    alert("Password Too Short!");
+                }
+                if(password.length>=8)
+                {
+                    $.ajax({
+                        url:"http://127.0.0.1:8080/user/adminLogin",
+                        type:"post",
+                        contentType: "application/json",
+                        data:JSON.stringify({
+                            usercount:useract,
+                            userpassword:password,
+                        }),
+                        dataType:"json",
+                        success:function(result){
+                            var usertype = result.usertype;
+                            if(usertype == "A"){
+                            	localStorage.setItem("userid", result.userid);
+                            	localStorage.setItem("school", result.userschool);
+                                alert("Succeed!");
+                            }
+                            else{
+                                alert("Not Allowed!");
+                            }
+                        }
+                    })
+                }
+            })
+        })
+        </script>
+</head>
+<body>
+<nav class="navbar navbar-inverse" style="margin-bottom:0px;box-shadow: 20px 20px 20px #888888">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav" style="float:right;">
+			</ul>
+		</div><!--/.nav-collapse -->
+	</div>
+</nav>
+<div class="container">
+	<div style="height:50px;width:100%;"></div>
+	<div><h1 style="text-align:center;">登  录</h1></div>
+	<div style="height:10px;width:100%;background-color:#aabbcc;"></div>
+	<div style="height:50px;width:100%;"></div>
+	<div class="container">
+		<div class="form row">
+			<form class="form-horizontal col-sm-offset-3 col-md-offset-3" id="register_form">
+				<div style="height:2%;width:100%;"></div>
+				<div class="col-sm-9 col-md-9" style="margin-left:-7%">
+					<div class="form-group">
+						<i class="fa fa-user fa-lg"></i>
+						<input class="form-control required" type="text" placeholder="Useract" name="useract" autofocus="autofocus"/>
+					</div>
+					<div class="form-group">
+						<i class="fa fa-lock fa-lg"></i>
+						<input class="form-control required" type="password" placeholder="Password" id="register_password" name="password"/>
+					</div>
+					<div class="form-group">
+						<input id="login" class="btn btn-success pull-right" value="Sign In "/>
+						<input class="btn btn-info pull-left" id="back_btn" value="Back"/>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+</body>

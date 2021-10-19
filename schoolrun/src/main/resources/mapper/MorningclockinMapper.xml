@@ -94,5 +94,6 @@
     select * 
     from morningclockin
     where Clockin_stuschool = #{clockin_stuschool,jdbcType=VARCHAR}
+    limit 20 offset #{offset}
   </select>
 </mapper>

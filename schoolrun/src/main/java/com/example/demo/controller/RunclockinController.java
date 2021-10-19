@@ -1,10 +1,13 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.example.demo.outDTO.runClockinDTO;
+import com.example.demo.utils.Assembles;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,10 +73,16 @@ public class RunclockinController {
     }
     
     @RequestMapping(path="getall",method=RequestMethod.POST,produces="application/json")
-    public List<Runclockin> getall(
+    public List<runClockinDTO> getall(
     		@RequestBody HashMap<String, String> map) {
     	String clockin_stuschool = map.get("clockin_stuschool");
-    	return runclockinService.getall(clockin_stuschool);
+		int page = Integer.parseInt(map.get("page"));
+    	List<Runclockin> runclockinList = runclockinService.getall(clockin_stuschool, page);
+    	List<runClockinDTO> respDTO = new ArrayList<runClockinDTO>();
+    	for(Runclockin clockin : runclockinList){
+    		respDTO.add(Assembles.assemble(clockin));
+		}
+    	return respDTO;
     }
     
 }

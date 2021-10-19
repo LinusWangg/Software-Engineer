@@ -174,8 +174,8 @@ public class RunclockinServiceImpl implements RunclockinService {
     	return mongoTemplate.find(query, Runclockin.class);
     }
     @Override
-    public List<Runclockin> getall(String clockin_stuschool){
-    	Query query = new Query(Criteria.where("clockinStuschool").is(clockin_stuschool));
+    public List<Runclockin> getall(String clockin_stuschool, int page){
+    	Query query = new Query(Criteria.where("clockinStuschool").is(clockin_stuschool)).skip((page-1)*20).limit(20);
     	return mongoTemplate.find(query, Runclockin.class);
     }
     

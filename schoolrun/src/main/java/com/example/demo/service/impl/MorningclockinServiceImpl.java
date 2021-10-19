@@ -116,7 +116,8 @@ public class MorningclockinServiceImpl implements MorningclockinService {
 		return morningclockinMapper.getmine(clockin_stuid, clockin_stuschool);
     }
     @Override
-    public List<Morningclockin> getall(String clockin_stuschool){
-    	return morningclockinMapper.getall(clockin_stuschool);
+    public List<Morningclockin> getall(String clockin_stuschool, int page){
+    	int offset = (page-1)*20;
+    	return morningclockinMapper.getall(clockin_stuschool, offset);
     }
 }
