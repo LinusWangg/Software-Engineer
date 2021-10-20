@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +52,16 @@ public class MorningclockinController {
     	int flag = morningclockinService.clockin(clockin_stuid,clockin_stuschool,clockin_time,clockin_code,clockin_ip,longitude,latitude);
     	return flag;
     }
+
+    @RequestMapping(path="update",method=RequestMethod.POST,produces="application/json")
+	public int update(
+			@RequestBody HashMap<String, String> map) {
+		String clockin_stuid = map.get("clockin_stuid");
+		String clockin_stuschool = map.get("clockin_stuschool");
+		long clockin_time = Long.parseLong(map.get("clockin_time"));
+		int flag = morningclockinService.update(clockin_stuid, clockin_stuschool, clockin_time);
+		return flag;
+	}
     
     @RequestMapping(path="getmine",method=RequestMethod.POST)
     public List<Morningclockin> getmine(

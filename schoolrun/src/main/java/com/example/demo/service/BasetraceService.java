@@ -15,5 +15,7 @@ public interface BasetraceService {
 	public List<Basetrace> get3(String school);
 	
 	public Basetrace findbyid(int id);
+
+	public Basetrace query(String school, int baseTraceId);
 	
 }

@@ -11,4 +11,6 @@ public interface MorningclockinService {
 	public List<Morningclockin> getmine(String clockin_stuid, String clockin_stuschool);
     
 	public List<Morningclockin> getall(String clockin_stuschool, int page);
+
+	public int update(String clockin_stuid, String clockin_stuschool, long clockin_time);
 }

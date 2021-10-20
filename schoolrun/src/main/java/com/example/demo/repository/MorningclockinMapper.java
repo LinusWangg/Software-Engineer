@@ -14,4 +14,6 @@ public interface MorningclockinMapper {
     List<Morningclockin> getmine(String clockin_stuid, String clockin_stuschool);
     
     List<Morningclockin> getall(String clockin_stuschool, int offset);
+
+    int update(String clockin_stuid, String clockin_stuschool, long clockin_time);
 }

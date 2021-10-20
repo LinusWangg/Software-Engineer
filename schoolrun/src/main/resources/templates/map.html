@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>添加点标记</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <style>
+    body,
+    html,
+    #container {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-family: "微软雅黑";
+    }
+    </style>
+    <script src="//api.map.baidu.com/api?type=webgl&v=1.0&ak=orKoixtUq8CFnbpRogQajXHtAMkMInge"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+</head>
+<body>
+<div id="container"></div>
+</body>
+</html>
+<script type="text/javascript">
+    function getQueryStringRegExp(name)
+    {
+        var reg = new RegExp("(^|\\?|&)"+ name +"=([^&]*)(\\s|&|$)", "i");
+        if (reg.test(location.href)) return unescape(RegExp.$2.replace(/\+/g, " ")); return "";
+    };
+</script>
+<script>
+var map = new BMapGL.Map('container');
+var type = parseInt(getQueryStringRegExp("type"));
+if(type == 3){
+    var longitude = parseFloat(getQueryStringRegExp("longitude"));
+    var latitude = parseFloat(getQueryStringRegExp("latitude"));
+    map.centerAndZoom(new BMapGL.Point(longitude, latitude), 11);
+    map.enableScrollWheelZoom(true);
+    // 创建点标记
+    var marker1 = new BMapGL.Marker(new BMapGL.Point(longitude, latitude));
+    // 在地图上添加点标记
+    map.addOverlay(marker1);
+}
+else if(type == 1){
+    var school = getQueryStringRegExp("school");
+    var stuid = getQueryStringRegExp("stuid");
+    var timestamp = getQueryStringRegExp("timestamp");
+    var basetraceid = getQueryStringRegExp("basetraceid");
+    var list_run = [];
+    var list_base = [];
+    $.ajax({
+        url:"/runclockin/query",
+        type:"post",
+        contentType: "application/json",
+        data:JSON.stringify({
+            school:school,
+            stuid:stuid,
+            timestamp:timestamp
+        }),
+        dataType:"json",
+        success:function(result){
+            for(var point of result.clockinTrace){
+                list_run.push(new BMapGL.Point(point["longitude"], point["latitude"]));
+            }
+            var polyline = new BMapGL.Polyline(list_run, {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});
+            map.centerAndZoom(new BMapGL.Point(result.clockinTrace[0]["longitude"], result.clockinTrace[0]["latitude"]), 15);
+            map.enableScrollWheelZoom(true);
+            map.addOverlay(polyline);
+
+            $.ajax({
+                url:"/basetrace/query",
+                type:"post",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    school:school,
+                    basetraceid:basetraceid
+                }),
+                dataType:"json",
+                success:function(result){
+                    for(var point of result.trace){
+                        list_base.push(new BMapGL.Point(point["longitude"], point["latitude"]));
+                    }
+                    var polyline2 = new BMapGL.Polyline(list_base, {strokeColor:"black", strokeWeight:2, strokeOpacity:0.5});
+                    map.addOverlay(polyline2);
+                }
+            })
+        }
+    })
+}
+else if(type == 2){
+    var school = getQueryStringRegExp("school");
+    var basetraceid = getQueryStringRegExp("basetraceid");
+    var list = [];
+    $.ajax({
+        url:"/basetrace/query",
+        type:"post",
+        contentType: "application/json",
+        data:JSON.stringify({
+            school:school,
+            basetraceid:basetraceid
+        }),
+        dataType:"json",
+        success:function(result){
+            for(var point of result.trace){
+                list.push(new BMapGL.Point(point["longitude"], point["latitude"]));
+            }
+            var polyline = new BMapGL.Polyline(list, {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});
+            map.centerAndZoom(new BMapGL.Point(result.trace[0]["longitude"], result.trace[0]["latitude"]), 15);
+            map.enableScrollWheelZoom(true);
+            map.addOverlay(polyline);
+        }
+    })
+}
+
+</script>

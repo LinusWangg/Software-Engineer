@@ -24,8 +24,10 @@ public class runClockinDTO {
 
     private float dtw;
 
+    private Long timestamp;
+
     public runClockinDTO(String clockinTime, String clockinIp, String clockinStuid, String clockinStuschool, JSONArray clockinTrace, Short clockinSucceed
-            , float runLength, int runTime, int baseid, float dtw) {
+            , float runLength, int runTime, int baseid, float dtw, long timestamp) {
         this.clockinTime = clockinTime;
         this.clockinIp = clockinIp;
         this.clockinStuid = clockinStuid;
@@ -36,10 +38,19 @@ public class runClockinDTO {
         this.runTime = runTime;
         this.baseid = baseid;
         this.dtw = dtw;
+        this.timestamp = timestamp;
     }
 
     public runClockinDTO() {
         super();
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getClockinTime() {

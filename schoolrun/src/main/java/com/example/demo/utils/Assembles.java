@@ -30,6 +30,8 @@ public class Assembles {
         dto.setLongitude(morningclockin.getLongitude());
         dto.setClockinSucceed(morningclockin.getClockinSucceed());
         dto.setClockinTime(timeStamp2Date(morningclockin.getClockinTime()));
+        dto.setTimestamp(morningclockin.getClockinTime());
+        dto.setClockinStuschool(morningclockin.getClockinStuschool());
         return dto;
     }
 
@@ -45,6 +47,7 @@ public class Assembles {
         dto.setClockinSucceed(runclockin.getClockinSucceed());
         dto.setClockinTime(timeStamp2Date(runclockin.getClockinTime()));
         dto.setClockinStuid(runclockin.getClockinStuid());
+        dto.setTimestamp(runclockin.getClockinTime());
         return dto;
     }
 
@@ -56,6 +59,7 @@ public class Assembles {
         dto.setAppealSchool(appeal.getAppealSchool());
         dto.setAppealStuid(appeal.getAppealStuid());
         dto.setAppealTime(timeStamp2Date(appeal.getAppealTime()));
+        dto.setTimestamp(appeal.getAppealTime());
         return dto;
     }
 

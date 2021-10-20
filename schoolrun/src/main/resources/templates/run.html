@@ -67,6 +67,38 @@
                 }
             })
           },
+          update(val){
+            var that = this;
+            $.ajax({
+                url:"/runclockin/update",
+                type:"post",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    clockin_stuschool:val["clockinStuschool"],
+                    clockin_stuid:val["clockinStuid"],
+                    clockin_time:val["timestamp"]
+                }),
+                dataType:"json",
+                success:function(result){
+                    if(result == 1){
+                        alert("修改成功");
+                    }
+                    else{
+                        alert("修改失败");
+                    }
+                }
+            })
+          },
+          watchRunTrace(val){
+            var that = this;
+            var nav = "/map?type=1&school="+String(val["clockinStuschool"])+"&stuid="+String(val["clockinStuid"])+"&timestamp="+String(val["timestamp"])+"&basetraceid="+String(val["baseid"]);
+            window.open(nav);
+          },
+          watchBaseTrace(val){
+            var that = this;
+            var nav = "/map?type=2&school="+String(val["clockinStuschool"])+"&basetraceid="+String(val["baseid"]);
+            window.open(nav);
+          },
           Pagechange(val){
             var that = this;
             that.submit(val);
@@ -138,9 +170,9 @@
                             label="操作"
                             width="300">
                         <template slot-scope="scope">
-                            <el-button type="text" size="small">查看打卡地图</el-button>
-                            <el-button type="text" size="small">查看基准路线</el-button>
-                            <el-button type="text" size="small">删除</el-button>
+                            <el-button type="text" size="small" @click="watchRunTrace(scope.row)">基准路线校验</el-button>
+                            <el-button type="text" size="small" @click="watchBaseTrace(scope.row)">查看基准路线</el-button>
+                            <el-button type="text" size="small" @click="update(scope.row)">打卡校准</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.Runclockin;
@@ -206,4 +207,17 @@ public class RunclockinServiceImpl implements RunclockinService {
 			return 0;
 		}
     }
+
+    @Override
+	public long update(String clockin_stuid, String clockin_stuschool, long clockin_time){
+		Query query = new Query(Criteria.where("clockinStuid").is(clockin_stuid).and("clockinStuschool").is(clockin_stuschool).and("clockinTime").is(clockin_time));
+		Update update = Update.update("clockinSucceed", 1);
+		return mongoTemplate.updateMulti(query, update, Runclockin.class).getModifiedCount();
+	}
+
+	@Override
+	public Runclockin query(String clockin_stuid, String clockin_stuschool, long clockin_time){
+		Query query = new Query(Criteria.where("clockinStuid").is(clockin_stuid).and("clockinStuschool").is(clockin_stuschool).and("clockinTime").is(clockin_time));
+		return mongoTemplate.findOne(query, Runclockin.class);
+	}
 }

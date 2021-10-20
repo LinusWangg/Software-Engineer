@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import com.example.demo.outDTO.baseTraceDTO;
 import com.example.demo.utils.Assembles;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,4 +67,14 @@ public class BasetraceController {
     	String school = map.get("school");
     	return basetraceService.get3(school);
     }
+
+	@RequestMapping(path="query",method=RequestMethod.POST,produces="application/json")
+	public baseTraceDTO query(
+			@RequestBody HashMap<String, String> map){
+		String school = map.get("school");
+		int baseTraceId = Integer.parseInt(map.get("basetraceid"));
+		Basetrace basetrace = basetraceService.query(school, baseTraceId);
+		baseTraceDTO respDTO = Assembles.assemble(basetrace);
+		return respDTO;
+	}
 }

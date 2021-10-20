@@ -96,4 +96,13 @@
     where Clockin_stuschool = #{clockin_stuschool,jdbcType=VARCHAR}
     limit 20 offset #{offset}
   </select>
+  <update id="update" parameterType="com.example.demo.model.Morningclockin">
+    update morningclockin
+    <set>
+      Clockin_succeed = 1
+    </set>
+    where Clockin_stuid = #{clockin_stuid,jdbcType=VARCHAR} AND
+    Clockin_stuschool = #{clockin_stuschool,jdbcType=VARCHAR} AND
+    Clockin_time = #{clockin_time,jdbcType=BIGINT}
+  </update>
 </mapper>

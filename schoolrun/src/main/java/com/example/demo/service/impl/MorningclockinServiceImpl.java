@@ -120,4 +120,8 @@ public class MorningclockinServiceImpl implements MorningclockinService {
     	int offset = (page-1)*20;
     	return morningclockinMapper.getall(clockin_stuschool, offset);
     }
+    @Override
+	public int update(String clockin_stuid, String clockin_stuschool, long clockin_time){
+    	return morningclockinMapper.update(clockin_stuid, clockin_stuschool, clockin_time);
+	}
 }

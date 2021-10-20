@@ -19,7 +19,9 @@ public class morningClockinDTO {
 
     private Float latitude;
 
-    public morningClockinDTO(String clockinTime, String clockinIp, String clockinStuid, String clockinStuschool, String clockinCode, short clockinSucceed, Float longitude, Float latitude) {
+    private Long timestamp;
+
+    public morningClockinDTO(String clockinTime, String clockinIp, String clockinStuid, String clockinStuschool, String clockinCode, short clockinSucceed, Float longitude, Float latitude, Long timestamp) {
         this.clockinTime = clockinTime;
         this.clockinIp = clockinIp;
         this.clockinStuid = clockinStuid;
@@ -28,10 +30,23 @@ public class morningClockinDTO {
         this.clockinSucceed = clockinSucceed;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.timestamp = timestamp;
+    }
+
+    public String getClockinStuschool() {
+        return clockinStuschool;
     }
 
     public String getClockinTime() {
         return clockinTime;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public void setClockinTime(String clockinTime) {

@@ -33,4 +33,9 @@ public class HTMLControl {
     public String index6(){
         return "basetrace";
     }
+
+    @RequestMapping("/map")
+    public String index7(){
+        return "map";
+    }
 }

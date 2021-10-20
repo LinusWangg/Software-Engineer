@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.example.demo.model.Basetrace;
+import com.example.demo.outDTO.baseTraceDTO;
 import com.example.demo.outDTO.runClockinDTO;
 import com.example.demo.utils.Assembles;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -84,5 +86,26 @@ public class RunclockinController {
 		}
     	return respDTO;
     }
+
+	@RequestMapping(path="update",method=RequestMethod.POST,produces="application/json")
+	public long update(
+			@RequestBody HashMap<String, String> map) {
+		String clockin_stuid = map.get("clockin_stuid");
+		String clockin_stuschool = map.get("clockin_stuschool");
+		long clockin_time = Long.parseLong(map.get("clockin_time"));
+		long flag = runclockinService.update(clockin_stuid, clockin_stuschool, clockin_time);
+		return flag;
+	}
+
+	@RequestMapping(path="query",method=RequestMethod.POST,produces="application/json")
+	public runClockinDTO query(
+			@RequestBody HashMap<String, String> map){
+		String clockin_stuid = map.get("stuid");
+		String clockin_stuschool = map.get("school");
+		long clockin_time = Long.parseLong(map.get("timestamp"));
+		Runclockin runclockin = runclockinService.query(clockin_stuid, clockin_stuschool, clockin_time);
+		runClockinDTO respDTO = Assembles.assemble(runclockin);
+		return respDTO;
+	}
     
 }

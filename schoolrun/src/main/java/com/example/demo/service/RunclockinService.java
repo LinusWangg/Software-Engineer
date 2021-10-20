@@ -18,5 +18,9 @@ public interface RunclockinService {
 	public List<Runclockin> getall(String clockin_stuschool, int page);
 	
 	public float gettodaykm(String clockin_stuid, String clockin_stuschool);
+
+	public long update(String clockin_stuid, String clockin_stuschool, long clockin_time);
+
+	public Runclockin query(String clockin_stuid, String clockin_stuschool, long clockin_time);
 	
 }

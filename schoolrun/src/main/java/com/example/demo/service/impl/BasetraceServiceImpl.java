@@ -90,4 +90,10 @@ public class BasetraceServiceImpl implements BasetraceService {
     	Query query = new Query(Criteria.where("basetraceid").is(id));
     	return mongoTemplate.findOne(query, Basetrace.class);
     }
+
+    @Override
+	public Basetrace query(String school, int baseTraceId){
+    	Query query = new Query((Criteria.where("basetraceid").is(baseTraceId).and("school").is(school)));
+    	return mongoTemplate.findOne(query, Basetrace.class);
+	}
 }

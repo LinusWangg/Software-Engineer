@@ -10,17 +10,20 @@ public class appealDTO {
 
     private String appealTime;
 
+    private Long timestamp;
+
     private Integer appealCondition;
 
     private String appealAdminid;
 
-    public appealDTO(String appealStuid, String appealSchool, String appealContent, String appealTime, Integer appealCondition, String appealAdminid) {
+    public appealDTO(String appealStuid, String appealSchool, String appealContent, String appealTime, Integer appealCondition, String appealAdminid, Long timestamp) {
         this.appealStuid = appealStuid;
         this.appealSchool = appealSchool;
         this.appealContent = appealContent;
         this.appealTime = appealTime;
         this.appealCondition = appealCondition;
         this.appealAdminid = appealAdminid;
+        this.timestamp = timestamp;
     }
 
     public appealDTO() {
@@ -29,6 +32,14 @@ public class appealDTO {
 
     public String getAppealStuid() {
         return appealStuid;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public void setAppealStuid(String appealStuid) {
