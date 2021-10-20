@@ -122,6 +122,10 @@ public class MorningclockinServiceImpl implements MorningclockinService {
     }
     @Override
 	public int update(String clockin_stuid, String clockin_stuschool, long clockin_time){
-    	return morningclockinMapper.update(clockin_stuid, clockin_stuschool, clockin_time);
+    	int flag = morningclockinMapper.update(clockin_stuid, clockin_stuschool, clockin_time);
+    	if(flag > 0){
+    		totalService.addmor(clockin_stuid, clockin_stuschool);
+		}
+    	return flag;
 	}
 }

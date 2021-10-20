@@ -212,7 +212,11 @@ public class RunclockinServiceImpl implements RunclockinService {
 	public long update(String clockin_stuid, String clockin_stuschool, long clockin_time){
 		Query query = new Query(Criteria.where("clockinStuid").is(clockin_stuid).and("clockinStuschool").is(clockin_stuschool).and("clockinTime").is(clockin_time));
 		Update update = Update.update("clockinSucceed", 1);
-		return mongoTemplate.updateMulti(query, update, Runclockin.class).getModifiedCount();
+		long flag = mongoTemplate.updateMulti(query, update, Runclockin.class).getModifiedCount();
+		if(flag > 0){
+			totalService.addrun(clockin_stuid, clockin_stuschool);
+		}
+		return flag;
 	}
 
 	@Override
