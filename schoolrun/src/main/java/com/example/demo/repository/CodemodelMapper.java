@@ -9,7 +9,7 @@ public interface CodemodelMapper {
 
     int insertSelective(Codemodel record);
 
-	List<Codemodel> getallcode();
+	List<Codemodel> getallcode(int offset);
 
 	Codemodel findbytime(int month, int day, int hour, int minute);
 }

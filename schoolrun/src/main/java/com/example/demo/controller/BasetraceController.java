@@ -43,9 +43,10 @@ public class BasetraceController {
     @RequestMapping(path="writein",method=RequestMethod.POST,produces="application/json")
     public int writein(
     		@RequestBody HashMap<String, String> map) {
+    	System.out.println(map);
     	String school = map.get("school");
     	JSONArray trace = JSONArray.parseArray(map.get("trace"));
-    	int flag = basetraceService.writein(school,trace);
+    	int flag = basetraceService.writein(school, trace);
     	return flag;
     }
     
@@ -76,5 +77,14 @@ public class BasetraceController {
 		Basetrace basetrace = basetraceService.query(school, baseTraceId);
 		baseTraceDTO respDTO = Assembles.assemble(basetrace);
 		return respDTO;
+	}
+
+	@RequestMapping(path="dele",method=RequestMethod.POST,produces="application/json")
+	public long dele(
+			@RequestBody HashMap<String, String> map){
+		String school = map.get("school");
+		int baseTraceId = Integer.parseInt(map.get("basetraceid"));
+		long flag = basetraceService.dele(school, baseTraceId);
+		return flag;
 	}
 }

@@ -38,4 +38,14 @@ public class HTMLControl {
     public String index7(){
         return "map";
     }
+
+    @RequestMapping("/draw")
+    public String index8(){
+        return "draw";
+    }
+
+    @RequestMapping("/code")
+    public String index9(){
+        return "code";
+    }
 }

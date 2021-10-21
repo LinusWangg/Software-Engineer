@@ -25,9 +25,11 @@ public class CodemodelController {
     @Resource
     private CodemodelService codemodelService;
 
-    @RequestMapping(path="showallcode",method=RequestMethod.GET)
-    public List<Codemodel> getallcode(){
-    	return codemodelService.getallcode();
+    @RequestMapping(path="showallcode",method=RequestMethod.POST,produces="application/json")
+    public List<Codemodel> getallcode(
+            @RequestBody HashMap<String, String> map){
+        int page = Integer.parseInt(map.get("page"));
+    	return codemodelService.getallcode(page);
     }
     
     @RequestMapping(path="makecode",method=RequestMethod.POST,produces="application/json")

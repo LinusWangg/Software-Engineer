@@ -7,7 +7,7 @@ import java.util.Date;
 
 public interface CodemodelService {
 
-	public List<Codemodel> getallcode();
+	public List<Codemodel> getallcode(int page);
 	
 	public Codemodel makecode(long born_time);
 	

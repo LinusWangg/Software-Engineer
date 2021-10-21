@@ -67,6 +67,30 @@
                 }
             })
           },
+          update(val){
+            var that = this;
+            $.ajax({
+                url:"/appeal/finish",
+                type:"post",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    appeal_stuid:val["appealStuid"],
+                    appeal_stuschool:val["appealSchool"],
+                    appeal_time:val["timestamp"],
+                    appeal_adminid:localStorage.getItem("userid")
+                }),
+                dataType:"json",
+                success:function(result){
+                    if(result == 1){
+                        alert("修改成功");
+                        location.reload();
+                    }
+                    else{
+                        alert("修改失败");
+                    }
+                }
+            })
+          },
           Pagechange(val){
             var that = this;
             that.submit(val);
@@ -82,6 +106,12 @@
           },
           toappeal(){
             window.location.href = "/appeals";
+          },
+          todraw(){
+            window.open("/draw");
+          },
+          tocode(){
+            window.location.href = "/code";
           },
         },
         delimiters:['${', '}']
@@ -101,6 +131,8 @@
                         <el-menu-item index="1-2" @click="torun()">跑步打卡</el-menu-item>
                         <el-menu-item index="1-3" @click="tobasetrace()">标准轨迹</el-menu-item>
                         <el-menu-item index="1-4" @click="toappeal()">申诉情况</el-menu-item>
+                        <el-menu-item index="1-5" @click="tocode()">打卡二维码</el-menu-item>
+                        <el-menu-item index="1-6" @click="todraw()">轨迹绘制</el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
             </el-menu>
@@ -129,15 +161,14 @@
                     </el-table-column>
                     <el-table-column prop="appealCondition" label="申诉处理情况" width="200">
                     </el-table-column>
-                    <el-table-column prop="appealAdmin" label="申诉处理人" width="200">
+                    <el-table-column prop="appealAdminid" label="申诉处理人" width="200">
                     </el-table-column>
                     <el-table-column
                             fixed="right"
                             label="操作"
                             width="200">
                         <template slot-scope="scope">
-                            <el-button type="text" size="small">申诉处理完成</el-button>
-                            <el-button type="text" size="small">删除</el-button>
+                            <el-button type="text" size="small" @click="update(scope.row)">申诉处理完成</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

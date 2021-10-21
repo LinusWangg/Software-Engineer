@@ -32,7 +32,7 @@ public class BasetraceServiceImpl implements BasetraceService {
     	Basetrace temp = new Basetrace();
     	temp.setschool(school);
     	temp.settrace(trace);
-    	Query query = new Query();
+    	Query query = new Query(Criteria.where("school").is(school));
     	Sort sort = Sort.by(Direction.DESC, "basetraceid");
     	query.with(sort).limit(1);
     	Basetrace tp = mongoTemplate.findOne(query, Basetrace.class);
@@ -95,5 +95,11 @@ public class BasetraceServiceImpl implements BasetraceService {
 	public Basetrace query(String school, int baseTraceId){
     	Query query = new Query((Criteria.where("basetraceid").is(baseTraceId).and("school").is(school)));
     	return mongoTemplate.findOne(query, Basetrace.class);
+	}
+
+	@Override
+	public long dele(String school, int baseTraceId){
+		Query query = new Query((Criteria.where("basetraceid").is(baseTraceId).and("school").is(school)));
+		return mongoTemplate.remove(query, Basetrace.class).getDeletedCount();
 	}
 }

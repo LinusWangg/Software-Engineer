@@ -69,6 +69,7 @@
     select 
     <include refid="Base_Column_List" />
     from codemodel
+    limit 20 offset #{offset}
   </select>
   <select id="findbytime" parameterType="com.example.demo.model.Codemodel" resultMap="BaseResultMap">
     select 

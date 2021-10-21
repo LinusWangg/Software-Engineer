@@ -17,5 +17,7 @@ public interface BasetraceService {
 	public Basetrace findbyid(int id);
 
 	public Basetrace query(String school, int baseTraceId);
+
+	public long dele(String school, int baseTraceId);
 	
 }

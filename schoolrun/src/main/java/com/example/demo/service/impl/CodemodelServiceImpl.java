@@ -50,8 +50,9 @@ public class CodemodelServiceImpl implements CodemodelService {
     }
     
 	@Override
-	public List<Codemodel> getallcode() {
-		return codemodelMapper.getallcode();
+	public List<Codemodel> getallcode(int page) {
+    	int offset = 20*(page-1);
+		return codemodelMapper.getallcode(offset);
 	}
 
 	public static String sendPostWithFile(String filePath) {
