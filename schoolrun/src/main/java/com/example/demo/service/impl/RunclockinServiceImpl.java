@@ -190,6 +190,9 @@ public class RunclockinServiceImpl implements RunclockinService {
 		int now_month = Integer.parseInt(now_datestr[0]);
 		int now_day = Integer.parseInt(now_datestr[1]);
 		List<Runclockin> List_mine = mongoTemplate.find(query, Runclockin.class);
+		if(List_mine.size() == 0) {
+			return 0;
+		}
 		Runclockin latest = List_mine.get(List_mine.size()-1);
 		if(latest == null) {
 			return 0;
