@@ -48,4 +48,9 @@ public class HTMLControl {
     public String index9(){
         return "code";
     }
+
+    @RequestMapping("/users")
+    public String index10(){
+        return "user";
+    }
 }

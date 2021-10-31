@@ -29,18 +29,30 @@
         el:'#app',
         data(){
           return {
-            tableData:this.Arts
+            tableData:this.Arts,
+            dialogFormVisible:false,
+            formLabelWidth: '120px',
+            formData: {
+                "usercount": "",
+                "userpassword": "",
+                "userid": "",
+                "username": "",
+                "usertype": "",
+                "phonenum": "",
+                "userschool": ""
+            },
           }
         },
         mounted(){
           this.$nextTick(()=>{
             var that=this;
             $.ajax({
-                url:"/codemodel/showallcode",
+                url:"/user/getall",
                 type:"post",
                 contentType: "application/json",
                 data:JSON.stringify({
                     page:1,
+                    school:localStorage.getItem("school"),
                 }),
                 dataType:"json",
                 success:function(result){
@@ -53,15 +65,39 @@
           submit:function(val){
             var that = this;
             $.ajax({
-              url:"/codemodel/showallcode",
+              url:"/user/getall",
                 type:"post",
                 contentType: "application/json",
                 data:JSON.stringify({
                     page:val,
+                    school:localStorage.getItem("school"),
                 }),
                 dataType:"json",
                 success:function(result){
                     that.tableData = result;
+                }
+            })
+          },
+          update(){
+            var that = this;
+            $.ajax({
+                url:"/user/adminModify",
+                type:"post",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    usercount:that.formData.usercount,
+                    username:that.formData.username,
+                    userid:that.formData.userid,
+                }),
+                dataType:"json",
+                success:function(result){
+                    if(result == 1){
+                        alert("修改成功");
+                        location.reload();
+                    }
+                    else{
+                        alert("修改失败");
+                    }
                 }
             })
           },
@@ -87,11 +123,13 @@
           tocode(){
             window.location.href = "/code";
           },
-          topic(val){
-            window.open(val["picAddress"])
-          },
           touser(){
             window.location.href = "/users";
+          },
+          open(val) {
+            var that = this;
+            that.dialogFormVisible = true;
+            that.formData = val;
           },
         },
         delimiters:['${', '}']
@@ -134,22 +172,22 @@
 
             <el-main>
                 <el-table :data="tableData">
-                    <el-table-column prop="bornMonth" label="月份" width="100">
+                    <el-table-column prop="usercount" label="用户账户" width="200">
                     </el-table-column>
-                    <el-table-column prop="bornDay" label="日期" width="100">
+                    <el-table-column prop="userid" label="用户id" width="200">
                     </el-table-column>
-                    <el-table-column prop="bornHour" label="小时" width="100">
+                    <el-table-column prop="username" label="用户姓名" width="200">
                     </el-table-column>
-                    <el-table-column prop="bornMinute" label="分钟(x/10)" width="100">
+                    <el-table-column prop="usertype" label="用户类型" width="200">
                     </el-table-column>
-                    <el-table-column prop="bornString" label="生成字符" width="200">
+                    <el-table-column prop="phonenum" label="用户电话" width="200">
                     </el-table-column>
                     <el-table-column
                             fixed="right"
                             label="操作"
                             width="200">
                         <template slot-scope="scope">
-                            <el-button type="text" size="small" @click="topic(scope.row)">查看链接</el-button>
+                            <el-button type="text" size="small" @click="open(scope.row)">修改信息</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -159,6 +197,29 @@
                         :total="5000"
                         @current-change="Pagechange">
                 </el-pagination>
+                <el-dialog title="用户信息" :visible.sync="dialogFormVisible">
+                    <el-form :model="formData">
+                        <el-form-item label="用户账号" :label-width="formLabelWidth">
+                            <el-input v-model="formData.usercount" autocomplete="off" :disabled="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="用户id" :label-width="formLabelWidth">
+                            <el-input v-model="formData.userid" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="用户姓名" :label-width="formLabelWidth">
+                            <el-input v-model="formData.username" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="用户类型" :label-width="formLabelWidth">
+                            <el-input v-model="formData.usertype" autocomplete="off" :disabled="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="用户手机" :label-width="formLabelWidth">
+                            <el-input v-model="formData.phonenum" autocomplete="off" :disabled="true"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="dialogFormVisible = false">取 消</el-button>
+                        <el-button type="primary" @click="update()">确 定</el-button>
+                    </div>
+                </el-dialog>
             </el-main>
         </el-container>
     </el-container>

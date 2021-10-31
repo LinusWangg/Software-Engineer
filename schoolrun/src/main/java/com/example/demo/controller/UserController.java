@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+import java.util.List;
 
 @RestController
 @EnableAutoConfiguration
@@ -45,17 +46,6 @@ public class UserController {
     	return flag;
     }
     
-    @RequestMapping(path="update",method=RequestMethod.POST)
-    public User updateUser(
-    		@RequestParam HashMap<String, String> map) {
-    	String usercount = map.get("usercount");
-    	String userid = map.get("userid");
-    	String username = map.get("username");
-    	String phonenum = map.get("phonenum");
-    	String userschool = map.get("userschool");
-    	return userService.updateUser(usercount,userid,username,phonenum,userschool);
-    }
-    
     @RequestMapping(path="login",method=RequestMethod.POST)
     public User loginUser(
     		@RequestParam HashMap<String, String> map) {
@@ -80,5 +70,23 @@ public class UserController {
 		String usercount = map.get("usercount");
 		String userpassword = map.get("userpassword");
 		return userService.loginUser(usercount,userpassword);
+	}
+
+	@RequestMapping(path="getall", method = RequestMethod.POST, produces="application/json")
+	public List<User> getall(
+			@RequestBody HashMap<String, String> map){
+		int page = Integer.parseInt(map.get("page"));
+		String school = map.get("school");
+		return userService.getall(school, page);
+	}
+
+	@RequestMapping(path="adminModify",method=RequestMethod.POST, produces="application/json")
+	public int adminModifyUser(
+			@RequestBody HashMap<String, String> map){
+		String usercount = map.get("usercount");
+		String username = map.get("username");
+		String userid = map.get("userid");
+		int flag = userService.updateUser(usercount, userid, username);
+		return flag;
 	}
 }

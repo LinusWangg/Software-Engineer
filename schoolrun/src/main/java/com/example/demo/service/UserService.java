@@ -11,9 +11,12 @@ public interface UserService {
     
     public int registUser(String usercount,String userpassword,String userid,String username,String phonenum,String userschool);
     
-    public User updateUser(String usercount,String userid,String username,String phonenum,String userschool);
+    public int updateUser(String usercount,String userid,String username);
     
     public User loginUser(String usercount,String userpassword);
     
     public int modifyUser(String usercount,String userpassword,String modify_userpassword);
+
+    public List<User> getall(String school, int page);
+
 }

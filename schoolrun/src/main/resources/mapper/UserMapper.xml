@@ -80,13 +80,8 @@
   </select>
   <update id="updateUser" parameterType="com.example.demo.model.User">
         update user
-        <set>
-            <if test="userid != null">userID = #{userid,jdbcType=VARCHAR},</if>
-            <if test="username != null">userName = #{username,jdbcType=VARCHAR},</if>
-            <if test="phonenum != null">Phonenum = #{phonenum,jdbcType=VARCHAR},</if>
-            <if test="userschool != null">userSchool = #{userschool,jdbcType=VARCHAR},</if>
-            userType = #{usertype,jdbcType=VARCHAR},
-        </set>
+        set userID = #{userid,jdbcType=VARCHAR},
+        userName = #{username,jdbcType=VARCHAR}
         where userCount = #{usercount,jdbcType=VARCHAR}
   </update>
   <update id="modifyUser" parameterType="com.example.demo.model.User">
@@ -96,4 +91,10 @@
         </set>
         where userCount = #{usercount,jdbcType=VARCHAR}
   </update>
+  <select id="getall" parameterType="com.example.demo.model.User" resultMap="BaseResultMap">
+    select *
+    from user
+    where userSchool = #{school,jdbcType=VARCHAR}
+    limit 20 offset #{offset}
+  </select>
 </mapper>

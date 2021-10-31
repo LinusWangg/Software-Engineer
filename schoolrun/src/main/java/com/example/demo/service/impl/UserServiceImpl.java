@@ -38,14 +38,8 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public User updateUser(String usercount,String userid,String username,String phonenum,String userschool) {
-    	userMapper.updateUser(usercount,userid,username,"stu",phonenum,userschool);
-    	User user = new User();
-    	user.setPhonenum(phonenum);
-    	user.setUserid(userid);
-    	user.setUserschool(userschool);
-    	user.setUsername(username);
-    	return user;
+    public int updateUser(String usercount,String userid,String username) {
+    	return userMapper.updateUser(usercount,userid,username);
     }
     
     @Override
@@ -85,4 +79,11 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<User> getall(String school, int page){
+    	int offset = 20*(page-1);
+    	return userMapper.getall(school, offset);
+	}
+
 }
