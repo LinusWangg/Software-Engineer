@@ -83,4 +83,17 @@ public class MorningclockinController {
 		}
 		return respDTO;
     }
+
+	@RequestMapping(path="queryRecord",method=RequestMethod.POST,produces="application/json")
+	public List<morningClockinDTO> qeuryRecord(
+			@RequestBody HashMap<String, String> map) {
+		String clockin_stuschool = map.get("clockin_stuschool");
+		String clockin_stuid = map.get("clockin_stuid");
+		List<Morningclockin> morningclockinList = morningclockinService.getmine(clockin_stuid,clockin_stuschool);
+		List<morningClockinDTO> respDTO = new ArrayList<morningClockinDTO>();
+		for(Morningclockin clockin : morningclockinList){
+			respDTO.add(Assembles.assemble(clockin));
+		}
+		return respDTO;
+	}
 }

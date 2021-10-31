@@ -107,5 +107,18 @@ public class RunclockinController {
 		runClockinDTO respDTO = Assembles.assemble(runclockin);
 		return respDTO;
 	}
+
+	@RequestMapping(path="queryRecord",method=RequestMethod.POST,produces="application/json")
+	public List<runClockinDTO> query_record(
+			@RequestBody HashMap<String, String> map){
+		String clockin_stuid = map.get("stuid");
+		String clockin_stuschool = map.get("school");
+		List<Runclockin> runclockinList = runclockinService.getmine(clockin_stuid, clockin_stuschool);
+		List<runClockinDTO> respDTO = new ArrayList<runClockinDTO>();
+		for(Runclockin runclockin : runclockinList) {
+			respDTO.add(Assembles.assemble(runclockin));
+		}
+		return respDTO;
+	}
     
 }

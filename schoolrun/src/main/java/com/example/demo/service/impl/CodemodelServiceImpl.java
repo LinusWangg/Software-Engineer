@@ -173,4 +173,8 @@ public class CodemodelServiceImpl implements CodemodelService {
 		}
 	}
 
+	@Override
+	public Codemodel query(int month, int day, int hour, int minute){
+    	return codemodelMapper.findbytime(month, day, hour, minute);
+	}
 }

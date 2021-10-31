@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <style>
+  .el-header {
+    background-color: #B3C0D1;
+    color: #333;
+    line-height: 60px;
+  }
+
+  .el-aside {
+    color: #333;
+  }
+  </style>
+    <script src="https://cdn.staticfile.org/vue/2.6.12/vue.min.js"></script>
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script>
+		window.onload = function(){
+      new Vue({
+        el:'#app',
+        data(){
+          return {
+            tableData1:[],
+            tableData2:[],
+            tableData3:[],
+            form1:{
+                "month":1,
+                "day":1,
+                "hour":1,
+                "minute":1
+            },
+            form2:{
+                "stuid":""
+            }
+          }
+        },
+        mounted(){
+          this.$nextTick(()=>{
+          })
+        },
+        methods:{
+          submit1(){
+            var that = this;
+            $.ajax({
+              url:"/codemodel/query",
+                type:"post",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    month:that.form1.month,
+                    day:that.form1.day,
+                    hour:that.form1.hour,
+                    minute:parseInt(that.form1.minute / 10)
+                }),
+                dataType:"json",
+                success:function(result){
+                    that.tableData1 = result;
+                }
+            })
+           },
+            submit2(){
+            var that = this;
+            $.ajax({
+              url:"/morningclockin/queryRecord",
+                type:"post",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    clockin_stuid:that.form2.stuid,
+                    clockin_stuschool:localStorage.getItem("school")
+                }),
+                dataType:"json",
+                success:function(result){
+                    that.tableData2 = result;
+                    $.ajax({
+                      url:"/runclockin/queryRecord",
+                        type:"post",
+                        contentType: "application/json",
+                        data:JSON.stringify({
+                            stuid:that.form2.stuid,
+                            school:localStorage.getItem("school")
+                        }),
+                        dataType:"json",
+                        success:function(result){
+                            that.tableData3 = result;
+                        }
+                    })
+                }
+            })
+          },
+          tomorning(){
+            window.location.href = "/morning";
+          },
+          torun(){
+              window.location.href = "/run";
+          },
+          tobasetrace(){
+            window.location.href = "/basetraces";
+          },
+          toappeal(){
+            window.location.href = "/appeals";
+          },
+          todraw(){
+            window.open("/draw");
+          },
+          tocode(){
+            window.location.href = "/code";
+          },
+          touser(){
+            window.location.href = "/users";
+          },
+          tosolve(){
+            window.location.href = "/solve";
+          },
+          update(val){
+            var that = this;
+            $.ajax({
+                url:"/runclockin/update",
+                type:"post",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    clockin_stuschool:val["clockinStuschool"],
+                    clockin_stuid:val["clockinStuid"],
+                    clockin_time:val["timestamp"]
+                }),
+                dataType:"json",
+                success:function(result){
+                    if(result == 1){
+                        alert("修改成功");
+                        location.reload();
+                    }
+                    else{
+                        alert("修改失败");
+                    }
+                }
+            })
+          },
+          watchRunTrace(val){
+            var that = this;
+            var nav = "/map?type=1&school="+String(val["clockinStuschool"])+"&stuid="+String(val["clockinStuid"])+"&timestamp="+String(val["timestamp"])+"&basetraceid="+String(val["baseid"]);
+            window.open(nav);
+          },
+          watchBaseTrace(val){
+            var that = this;
+            var nav = "/map?type=2&school="+String(val["clockinStuschool"])+"&basetraceid="+String(val["baseid"]);
+            window.open(nav);
+          },
+          update_mor(val){
+            var that = this;
+            $.ajax({
+                url:"/morningclockin/update",
+                type:"post",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    clockin_stuschool:val["clockinStuschool"],
+                    clockin_stuid:val["clockinStuid"],
+                    clockin_time:val["timestamp"]
+                }),
+                dataType:"json",
+                success:function(result){
+                    if(result == 1){
+                        alert("修改成功");
+                        location.reload();
+                    }
+                    else{
+                        alert("修改失败");
+                    }
+                }
+            })
+          },
+          watchLocation(val){
+            var that = this;
+            var nav = "/map?type=3&latitude="+String(val["latitude"])+"&longitude="+String(val["longitude"]);
+            window.open(nav);
+          },
+          topic(val){
+            window.open(val["picAddress"])
+          },
+        },
+        delimiters:['${', '}']
+      })
+    }
+  </script>
+</head>
+<body>
+<div id="app">
+    <el-container style="height: 1000px; border: 1px solid #eee">
+        <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+            <el-menu :default-openeds="['1', '3']">
+                <el-submenu index="1">
+                    <template slot="title"><i class="el-icon-message"></i>类别</template>
+                    <el-menu-item-group>
+                        <el-menu-item index="1-1" @click="tomorning()">早操打卡</el-menu-item>
+                        <el-menu-item index="1-2" @click="torun()">跑步打卡</el-menu-item>
+                        <el-menu-item index="1-3" @click="tobasetrace()">标准轨迹</el-menu-item>
+                        <el-menu-item index="1-4" @click="toappeal()">申诉情况</el-menu-item>
+                        <el-menu-item index="1-5" @click="tocode()">打卡二维码</el-menu-item>
+                        <el-menu-item index="1-6" @click="todraw()">轨迹绘制</el-menu-item>
+                        <el-menu-item index="1-7" @click="touser()">用户信息</el-menu-item>
+                        <el-menu-item index="1-8" @click="tosolve()">处理平台</el-menu-item>
+                    </el-menu-item-group>
+                </el-submenu>
+            </el-menu>
+        </el-aside>
+
+        <el-container>
+            <el-header style="text-align: right; font-size: 12px">
+                <el-dropdown>
+                    <i class="el-icon-setting" style="margin-right: 15px"></i>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>查看</el-dropdown-item>
+                        <el-dropdown-item>新增</el-dropdown-item>
+                        <el-dropdown-item>删除</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+                <span>admin</span>
+            </el-header>
+
+            <el-main>
+                <el-form :inline="true" :model="form1" class="demo-form-inline">
+                    <el-form-item label="月">
+                        <el-input v-model="form1.month"></el-input>
+                    </el-form-item>
+                    <el-form-item label="日">
+                        <el-input v-model="form1.day"></el-input>
+                    </el-form-item>
+                    <el-form-item label="时">
+                        <el-input v-model="form1.hour"></el-input>
+                    </el-form-item>
+                    <el-form-item label="分">
+                        <el-input v-model="form1.minute"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="submit1()">查询</el-button>
+                    </el-form-item>
+                </el-form>
+
+                <el-table :data="tableData1">
+                    <el-table-column prop="bornMonth" label="月份" width="100">
+                    </el-table-column>
+                    <el-table-column prop="bornDay" label="日期" width="100">
+                    </el-table-column>
+                    <el-table-column prop="bornHour" label="小时" width="100">
+                    </el-table-column>
+                    <el-table-column prop="bornMinute" label="分钟(x/10)" width="100">
+                    </el-table-column>
+                    <el-table-column prop="bornString" label="生成字符" width="200">
+                    </el-table-column>
+                    <el-table-column
+                            fixed="right"
+                            label="操作"
+                            width="200">
+                        <template slot-scope="scope">
+                            <el-button type="text" size="small" @click="topic(scope.row)">查看链接</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <el-form :inline="true" :model="form2" class="demo-form-inline">
+                    <el-form-item label="学生id">
+                        <el-input v-model="form2.stuid"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="submit2()">查询</el-button>
+                    </el-form-item>
+                </el-form>
+
+                <el-table :data="tableData2">
+                    <el-table-column prop="clockinTime" label="打卡时间" width="200">
+                    </el-table-column>
+                    <el-table-column prop="clockinStuid" label="打卡id" width="200">
+                    </el-table-column>
+                    <el-table-column prop="clockinCode" label="打卡验证码" width="200">
+                    </el-table-column>
+                    <el-table-column prop="clockinSucceed" label="打卡成功请客" width="200">
+                    </el-table-column>
+                    <el-table-column
+                            fixed="right"
+                            label="操作"
+                            width="200">
+                        <template slot-scope="scope">
+                            <el-button type="text" size="small" @click="watchLocation(scope.row)">查看打卡位置</el-button>
+                            <el-button type="text" size="small" @click="update_mor(scope.row)">打卡校准</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <el-table :data="tableData3">
+                    <el-table-column prop="clockinTime" label="打卡时间" width="200">
+                    </el-table-column>
+                    <el-table-column prop="clockinStuid" label="打卡id" width="200">
+                    </el-table-column>
+                    <el-table-column prop="runLength" label="跑步长度" width="200">
+                    </el-table-column>
+                    <el-table-column prop="runTime" label="跑步时长" width="200">
+                    </el-table-column>
+                    <el-table-column prop="dtw" label="误差值" width="200">
+                    </el-table-column>
+                    <el-table-column prop="clockinSucceed" label="打卡成功情况" width="200">
+                    </el-table-column>
+                    <el-table-column
+                            fixed="right"
+                            label="操作"
+                            width="300">
+                        <template slot-scope="scope">
+                            <el-button type="text" size="small" @click="watchRunTrace(scope.row)">基准路线校验</el-button>
+                            <el-button type="text" size="small" @click="watchBaseTrace(scope.row)">查看基准路线</el-button>
+                            <el-button type="text" size="small" @click="update(scope.row)">打卡校准</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-main>
+        </el-container>
+    </el-container>
+</div>
+</body>
+
+</html>

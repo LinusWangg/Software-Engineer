@@ -10,5 +10,6 @@ public interface CodemodelService {
 	public List<Codemodel> getallcode(int page);
 	
 	public Codemodel makecode(long born_time);
-	
+
+	public Codemodel query(int month, int day, int hour, int minute);
 }

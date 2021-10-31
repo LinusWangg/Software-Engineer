@@ -116,6 +116,9 @@
           touser(){
             window.location.href = "/users";
           },
+          tosolve(){
+            window.location.href = "/solve";
+          },
         },
         delimiters:['${', '}']
       })
@@ -137,6 +140,7 @@
                         <el-menu-item index="1-5" @click="tocode()">打卡二维码</el-menu-item>
                         <el-menu-item index="1-6" @click="todraw()">轨迹绘制</el-menu-item>
                         <el-menu-item index="1-7" @click="touser()">用户信息</el-menu-item>
+                        <el-menu-item index="1-8" @click="tosolve()">处理平台</el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
             </el-menu>
