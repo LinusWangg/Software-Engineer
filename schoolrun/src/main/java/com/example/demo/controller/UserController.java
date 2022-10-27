@@ -1,9 +1,12 @@
 package com.example.demo.controller;
 
+import java.util.HashMap;
+
 import javax.annotation.Resource;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,36 +34,38 @@ public class UserController {
     
     @RequestMapping(path="regist",method=RequestMethod.POST,produces="application/json")
     public int registUser(
-    		@RequestParam("usercount") String usercount,
-    		@RequestParam("userpassword") String userpassword) {
+    		@RequestBody HashMap<String, String> map) {
+    	String usercount = map.get("usercount");
+    	String userpassword = map.get("userpassword");
     	int flag = userService.registUser(usercount,userpassword);
     	return flag;
     }
     
     @RequestMapping(path="update",method=RequestMethod.POST,produces="application/json")
-    public int updateUser(
-    		@RequestParam("usercount") String usercount,
-    		@RequestParam("userid") String userid,
-    		@RequestParam("username") String username,
-    		@RequestParam("phonenum") String phonenum,
-    		@RequestParam("userschool") String userschool) {
-    	int flag = userService.updateUser(usercount,userid,username,phonenum,userschool);
-    	return flag;
+    public User updateUser(
+    		@RequestBody HashMap<String, String> map) {
+    	String usercount = map.get("usercount");
+    	String userid = map.get("userid");
+    	String username = map.get("username");
+    	String phonenum = map.get("phonenum");
+    	String userschool = map.get("userschool");
+    	return userService.updateUser(usercount,userid,username,phonenum,userschool);
     }
     
     @RequestMapping(path="login",method=RequestMethod.POST,produces="application/json")
-    public int loginUser(
-    		@RequestParam("usercount") String usercount,
-    		@RequestParam("userpassword") String userpassword) {
-    	int flag = userService.loginUser(usercount,userpassword);
-    	return flag;
+    public User loginUser(
+    		@RequestBody HashMap<String, String> map) {
+    	String usercount = map.get("usercount");
+    	String userpassword = map.get("userpassword");
+    	return userService.loginUser(usercount,userpassword);
     }
 
     @RequestMapping(path="modify",method=RequestMethod.POST,produces="application/json")
     public int modifyUser(
-    		@RequestParam("usercount") String usercount,
-    		@RequestParam("userpassword") String userpassword,
-    		@RequestParam("modify_userpassword") String modify_userpassword){
+    		@RequestBody HashMap<String, String> map){
+    	String usercount = map.get("usercount");
+    	String userpassword = map.get("userpassword");
+    	String modify_userpassword = map.get("modify_password");
     	int flag = userService.modifyUser(usercount,userpassword,modify_userpassword);
     	return flag;
     }

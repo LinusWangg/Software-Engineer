@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.MorningclockinMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.model.Morningclockin">
+    <constructor>
+      <arg column="Clockin_time" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="Clockin_ip" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="Clockin_stuid" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="Clockin_stuschool" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="Clockin_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="Clockin_succeed" javaType="java.lang.Short" jdbcType="SMALLINT" />
+      <arg column="longitude" javaType="java.lang.Float" jdbcType="REAL" />
+      <arg column="latitude" javaType="java.lang.Float" jdbcType="REAL" />
+    </constructor>
+  </resultMap>
+  <insert id="insert" parameterType="com.example.demo.model.Morningclockin">
+    insert into morningclockin (Clockin_time, Clockin_ip, Clockin_stuid, 
+      Clockin_stuschool, Clockin_code, Clockin_succeed, 
+      longitude, latitude)
+    values (#{clockinTime,jdbcType=BIGINT}, #{clockinIp,jdbcType=VARCHAR}, #{clockinStuid,jdbcType=VARCHAR}, 
+      #{clockinStuschool,jdbcType=VARCHAR}, #{clockinCode,jdbcType=VARCHAR}, #{clockinSucceed,jdbcType=SMALLINT}, 
+      #{longitude,jdbcType=REAL}, #{latitude,jdbcType=REAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.model.Morningclockin">
+    insert into morningclockin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="clockinTime != null">
+        Clockin_time,
+      </if>
+      <if test="clockinIp != null">
+        Clockin_ip,
+      </if>
+      <if test="clockinStuid != null">
+        Clockin_stuid,
+      </if>
+      <if test="clockinStuschool != null">
+        Clockin_stuschool,
+      </if>
+      <if test="clockinCode != null">
+        Clockin_code,
+      </if>
+      <if test="clockinSucceed != null">
+        Clockin_succeed,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="clockinTime != null">
+        #{clockinTime,jdbcType=BIGINT},
+      </if>
+      <if test="clockinIp != null">
+        #{clockinIp,jdbcType=VARCHAR},
+      </if>
+      <if test="clockinStuid != null">
+        #{clockinStuid,jdbcType=VARCHAR},
+      </if>
+      <if test="clockinStuschool != null">
+        #{clockinStuschool,jdbcType=VARCHAR},
+      </if>
+      <if test="clockinCode != null">
+        #{clockinCode,jdbcType=VARCHAR},
+      </if>
+      <if test="clockinSucceed != null">
+        #{clockinSucceed,jdbcType=SMALLINT},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=REAL},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="findlastsucceed" parameterType="com.example.demo.model.Morningclockin" resultMap="BaseResultMap">
+    select * 
+    from morningclockin
+    where Clockin_stuid = #{clockin_stuid,jdbcType=VARCHAR} AND
+    Clockin_stuschool = #{clockin_stuschool,jdbcType=VARCHAR} AND
+    Clockin_succeed = #{succeed,jdbcType=SMALLINT} 
+    order by Clockin_time DESC limit 1 
+  </select>
+  <select id="getmine" parameterType="com.example.demo.model.Morningclockin" resultMap="BaseResultMap">
+    select * 
+    from morningclockin
+    where Clockin_stuid = #{clockin_stuid,jdbcType=VARCHAR} AND
+    Clockin_stuschool = #{clockin_stuschool,jdbcType=VARCHAR}
+  </select>
+  <select id="getall" parameterType="com.example.demo.model.Morningclockin" resultMap="BaseResultMap">
+    select * 
+    from morningclockin
+    where Clockin_stuschool = #{clockin_stuschool,jdbcType=VARCHAR}
+  </select>
+</mapper>
